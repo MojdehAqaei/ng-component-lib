@@ -1,0 +1,15 @@
+<div [ngClass]="styleClasses" class="cl-text-area-container">
+    <textarea class="cl-text-area"
+              [readonly]="readonly"
+              [rows]="rows"
+              [maxlength]="maxLength!"
+              [(ngModel)]="value"
+              [placeholder]="placeholder"
+              [disabled]="!!disabled"
+              [ngClass]="{'cl-disabled': disabled, 'cl-readonly': readonly}"
+              (input)="change($event)">
+    </textarea>
+  @if (showLength && maxLength && value?.length) {
+    <div class="cl-text-area-counter">{{value.length}}/{{maxLength}}</div>
+  }
+</div>

@@ -1,0 +1,208 @@
+<form [formGroup]="svc.form" [ngClass]="styleClasses" *ngIf="svc.form" #formElement>
+  <cl-alert-message  *ngIf="svc?.errors?.length" [messages]="svc.errors!" >  </cl-alert-message>
+
+  <div class="row cl-form">
+    <div class="cl-form-field" *ngFor="let control of formSchema" [ngClass]="control?.styleClasses || 'col s12 m6 l4'">
+      <label class="cl-input-label" [ngClass]="{'cl-required': control?.required}">{{control.label}}</label>
+
+      @switch (control.controlType) {
+        @case ('INPUT_TEXT') {
+          @if(control?.mask) {
+            <cl-input-mask [formControlName]="control.name"
+                           [mask]="control?.mask"
+                           [keyFilter]="control.keyFilter"
+                           [icon]="control.icon"
+                           [size]="control.size"
+                           [iconPosition]="control.iconPosition"
+                           (onInputChange)="control.onChange ? control.onChange($event) : null"
+                           clValidatorErrors
+                           [validationErrors]="control.validatorsError"
+                           [showValidatorErrors]="(lazyValidation ? svc.form.controls[control.name].dirty : submitted)  && svc.form.controls[control.name].invalid"/>
+          } @else {
+            <cl-input-text [formControlName]="control.name"
+                           [type]="control.inputTextType || 'text'"
+                           [placeholder]="control.label"
+                           [clKeyFilter]="control.keyFilter"
+                           [maxLength]="control.maxLength"
+                           [icon]="control.icon"
+                           [size]="control.size"
+                           [iconPosition]="control.iconPosition || 'right'"
+                           clValidatorErrors
+                           [validationErrors]="control.validatorsError"
+                           [showValidatorErrors]="(lazyValidation ? (svc.form.controls[control.name].touched || svc.form.controls[control.name].dirty) : submitted) && svc.form.controls[control.name].invalid"
+                           (onEnter)="control.onEnter ? control.onEnter($event) : null"/>
+          }
+        }
+
+        @case ('INPUT_NUMBER') {
+          <cl-input-number [formControlName]="control.name"
+                           [placeholder]="control.label"
+                           [useGrouping]="control.numberGrouping"
+                           [mode]="control.numberMode"
+                           [suffix]="control.suffix"
+                           [prefix]="control.prefix"
+                           [min]="control.min"
+                           [max]="control.max"
+                           [maxFractionDigits]="control.maxFractionDigits"
+                           clValidatorErrors
+                           [validationErrors]="control.validatorsError"
+                           [showValidatorErrors]="(lazyValidation ? svc.form.controls[control.name].dirty : submitted)  && svc.form.controls[control.name].invalid"
+                           (onEnter)="control.onEnter ? control.onEnter($event) : null"
+                           (onInputChange)="control.onChange ? control.onChange($event) : null"/>
+        }
+
+        @case ('CHIPS') {
+          <cl-chips [formControlName]="control.name"
+                    [placeholder]="control.label"
+                    [allowDuplicate]="control.allowDuplicate"
+                    [maxLength]="control.maxLength"
+                    [showLength]="control.showLength"
+                    clValidatorErrors
+                    [validationErrors]="control.validatorsError"
+                    [showValidatorErrors]="(lazyValidation ? svc.form.controls[control.name].dirty : submitted)  && svc.form.controls[control.name].invalid"/>
+        }
+        @case ('SELECT_BUTTON') {
+          <cl-select-button [formControlName]="control.name"
+                            [options]="control.options || []"
+                            [renderHtml]="control.renderHtml || false"
+                            [separate]="control.separate || false"
+                            [disabled]="!!control.disabled"
+                            (onSelect)="control.onSelect ? control.onSelect($event) : null"
+                            clValidatorErrors
+                            [validationErrors]="control.validatorsError"
+                            [showValidatorErrors]="(lazyValidation ? svc.form.controls[control.name].dirty : submitted)  && svc.form.controls[control.name].invalid"/>
+        }
+
+        @case ('INPUT_SWITCH') {
+          <cl-input-switch [formControlName]="control.name"
+                           (onInputChange)="control.onChange ? control.onChange($event) : null"
+                           clValidatorErrors
+                           [validationErrors]="control.validatorsError"
+                           [showValidatorErrors]="(lazyValidation ? svc.form.controls[control.name].dirty : submitted)  && svc.form.controls[control.name].invalid"/>
+        }
+
+        @case ('INPUT_GROUP') {
+          <cl-input-group [formControlName]="control.name"
+                          (onInputChange)="control.onChange ? control.onChange($event) : null"
+                          [addons]="control.addons"
+                          [clKeyFilter]="control.keyFilter"
+                          [maxLength]="control.maxLength"
+                          clValidatorErrors
+                          [validationErrors]="control.validatorsError"
+                          [showValidatorErrors]="(lazyValidation ? svc.form.controls[control.name].dirty : submitted)  && svc.form.controls[control.name].invalid"/>
+        }
+
+        @case ('CHECKBOX') {
+          @for (item of control.options;let i = $index; track item.value) {
+            <cl-checkbox [formControlName]="control.name"
+                         [label]="item.label"
+                         [value]="item.value"
+                         [binary]="control.binary"
+                         (onCheck)="control.onChange ? control.onChange($event) : null"
+                         clValidatorErrors
+                         [validationErrors]="control.validatorsError"
+                         [showValidatorErrors]="i == 0 ? (lazyValidation ? svc.form.controls[control.name].dirty : submitted) && svc.form.controls[control.name].invalid: false"/>
+          }
+        }
+
+        @case ('RADIO_BUTTON') {
+          @for (item of control.options;let i= $index; track item.value) {
+            <cl-radio-button [formControlName]="control.name"
+                             [label]="item.label"
+                             [value]="item.value"
+                             [name]="control.name"
+                             (onInputChange)="control.onChange ? control.onChange($event) : null"
+                             clValidatorErrors
+                             [validationErrors]="control.validatorsError"
+                             [showValidatorErrors]="i == 0 ?(lazyValidation ? svc.form.controls[control.name].dirty : submitted)  && svc.form.controls[control.name].invalid : false"/>
+          }
+        }
+
+        @case ('SELECT') {
+          <cl-select [formControlName]="control.name"
+                     [options]="control.options"
+                     [showClearIcon]="control.showClearIcon"
+                     [filterPlaceholder]="control.filterPlaceholder"
+                     [filterable]="control.filterable"
+                     [multiple]="false"
+                     [disabled]="!!control.disabled"
+                     [method]="control.method"
+                     [httpParams]="control.params"
+                     [httpContext]="control.httpContext"
+                     [lazyFilter]="control.lazyFilter"
+                     [url]="control.url"
+                     [optionLabel]="control.optionLabel"
+                     [optionValue]="control.optionValue"
+                     (onSelect)="control.onSelect ? control.onSelect($event) : null"
+                     (optionsChange)="control.onChange ? control.onChange($event) : null"
+                     clValidatorErrors
+                     [validationErrors]="control.validatorsError"
+                     [showValidatorErrors]="(lazyValidation ? svc.form.controls[control.name].dirty : submitted)  && svc.form.controls[control.name].invalid"/>
+        }
+
+        @case ('MULTISELECT') {
+          <cl-select [formControlName]="control.name"
+                     [options]="control.options"
+                     [showClearIcon]="control.showClearIcon"
+                     [filterPlaceholder]="control.filterPlaceholder"
+                     [filterable]="control.filterable"
+                     [multiple]="true"
+                     [disabled]="!!control.disabled"
+                     [method]="control.method"
+                     [httpParams]="control.params"
+                     [httpContext]="control.httpContext"
+                     [lazyFilter]="control.lazyFilter"
+                     [url]="control.url"
+                     [optionLabel]="control.optionLabel"
+                     [optionValue]="control.optionValue"
+                     (onSelect)="control.onSelect ? control.onSelect($event) : null"
+                     (optionsChange)="control.onChange ? control.onChange($event) : null"
+                     clValidatorErrors
+                     [validationErrors]="control.validatorsError"
+                     [showValidatorErrors]="(lazyValidation ? svc.form.controls[control.name].dirty : submitted)  && svc.form.controls[control.name].invalid"/>
+        }
+
+        @case ('TEXTAREA') {
+          <cl-text-area [formControlName]="control.name"
+                        [placeholder]="control.label"
+                        [rows]="control.rows"
+                        [clKeyFilter]="control.keyFilter"
+                        [maxLength]="control.maxLength"
+                        [showLength]="control.showLength"
+                        (onInputChange)="control.onChange ? control.onChange($event) : null"
+                        clValidatorErrors
+                        [validationErrors]="control.validatorsError"
+                        [showValidatorErrors]="(lazyValidation ? svc.form.controls[control.name].dirty : submitted)  && svc.form.controls[control.name].invalid"/>
+        }
+
+        @case ('DATEPICKER') {
+          <cl-date-picker [formControlName]="control.name"
+                          (select)="control.onChange ? control.onChange($event) : null"
+                          [clear]="control.hasClear || false"
+                          clValidatorErrors
+                          [validationErrors]="control.validatorsError"
+                          [showValidatorErrors]="(lazyValidation ? svc.form.controls[control.name].dirty : submitted)  && svc.form.controls[control.name].invalid"/>
+        }
+
+        @case ('FILE_UPLOADER') {
+          <cl-file-uploader [formControlName]="control.name"
+                            [method]="control.method"
+                            [httpParams]="control.params"
+                            [httpContext]="control.httpContext"
+                            [body]="control.body"
+                            [url]="control.url"
+                            [fileDeleteUrl]="control.fileDeleteUrl"
+                            [fileDownloadUrl]="control.fileDownloadUrl"
+                            [maxFileSize]="control.maxFileSize"
+                            [fileLimit]="control.fileLimit"
+                            [auto]="control.autoUpload"
+                            [disabled]="!!control.disabled"
+                            [accept]="control.acceptFileFormat"/>
+        }
+      }
+    </div>
+  </div>
+
+</form>
+
+

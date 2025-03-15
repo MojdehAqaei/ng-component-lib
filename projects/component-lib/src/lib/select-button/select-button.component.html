@@ -1,0 +1,16 @@
+<div
+  [ngClass]="{
+    'cl-select-button--separate': separate,
+    'cl-select-button': !separate
+  }"
+  [ngStyle]="{ 'column-gap': gap }"
+>
+  @for (option of options; let i = $index; track i) {
+    <div
+      class="button"
+      [innerHTML]="option.content"
+      [ngClass]="{ selected: option.selected, disabled }"
+      (click)="handleClick(option, i)"
+    ></div>
+  }
+</div>

@@ -1,0 +1,76 @@
+<div class="cl-listbox cl-component"
+     [ngClass]="styleClasses">
+
+  @if(!data?.length) {
+    <div class="cl-listbox-empty-message">{{ emptyDataMessage }}</div>
+  } @else {
+    <div class="cl-listbox-list-wrapper">
+      @if (isOrdered) {
+        <ol class="cl-listbox-list">
+          <ng-container [ngTemplateOutlet]="listItem" [ngTemplateOutletContext]="{items:data}"></ng-container>
+        </ol>
+      } @else {
+        <ul class="cl-listbox-list" [ngClass]="{'cl-no-style-type': noDefaultStyle}">
+          <ng-container [ngTemplateOutlet]="listItem" [ngTemplateOutletContext]="{items:data}"></ng-container>
+        </ul>
+      }
+    </div>
+  }
+</div>
+
+
+<ng-template #listItem let-items="items">
+  @if (draggable) {
+    <div cdkDropList (cdkDropListDropped)="drop($event)" class="cl-draggable-list">
+      <ng-container *ngFor="let item of items; let i = index">
+        <li class="cl-element cl-listbox-item cl-listbox-item-draggable" cdkDrag>
+          <ng-container [ngTemplateOutlet]="listBoxItemInner" [ngTemplateOutletContext]="{item:item, index: i}"/>
+        </li>
+      </ng-container>
+    </div>
+  } @else {
+    @for (item of items; track item) {
+      <li class="cl-element cl-listbox-item">
+        <ng-container [ngTemplateOutlet]="listBoxItemInner" [ngTemplateOutletContext]="{item:item, index: $index}"/>
+      </li>
+    }
+  }
+</ng-template>
+
+<ng-template #listBoxItemInner let-item="item" let-index="index">
+  @if (selectable && optionValue) {
+    @if (multiple) {
+      <cl-checkbox (click)="$event.stopPropagation();"
+                   (onCheck)="select($event)"
+                   [label]="item.label"
+                   [value]="item[optionValue]"
+                   [disabled]="disabled"
+                   [(ngModel)]="selectedOptions"/>
+    } @else {
+      <cl-radio-button [value]="item[optionValue]"
+                       [name]="'listOption'"
+                       [disabled]="disabled"
+                       [(ngModel)]="selectedOptions"
+                       (onInputChange)="select($event)"/>
+    }
+  }
+
+  <span class="cl-listbox-item-header">
+    @if (image) {
+      <cl-image class="image" [src]="image"/>
+    }
+
+    @if (icon) {
+      <i class="material-icons icon">{{icon}}</i>
+    }
+
+    @if (templateRef && templateRef.template) {
+      <ng-container [ngTemplateOutlet]="templateRef.template"
+                    [ngTemplateOutletContext]="{data: item, index: index}"></ng-container>
+    } @else {
+      <span>{{ item | ClObjectToString:optionLabel }}</span>
+    }
+  </span>
+</ng-template>
+
+

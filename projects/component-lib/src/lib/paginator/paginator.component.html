@@ -1,0 +1,34 @@
+<div class="cl-paginator cl-component" *ngIf="alwaysShow ? true : pageLinks?.length" [ngClass]="styleClasses">
+
+  <span class="cl-paginator-current">{{(first+1)+' الی '+(first + rows > totalRecords ? totalRecords : first + rows) +' از '+ totalRecords}}</span>
+
+  <button type="button" class="cl-element cl-paginator-first cl-paginator-element "
+          [ngClass]="{'cl-disabled': pageLinks[0] == 1}" (click)="changePage('first')"><span
+    class="cl-paginator-icon pi pi-angle-double-left"></span>
+  </button>
+
+  <button type="button" class="cl-element cl-paginator-prev cl-paginator-element "
+          [ngClass]="{'cl-disabled': pageLinks[0] == 1}" (click)="changePage('prev')">
+    <span class="cl-paginator-icon pi pi-angle-left"></span>
+  </button>
+
+  <span class="cl-paginator-pages" *ngFor="let page of pageLinks;let i=index" (click)="changePage('page',page)">
+    <button type="button" class="cl-element cl-paginator-page cl-paginator-element "
+            [ngClass]="{'cl-paginator-current cl-highlight':currentPage == page}">{{page}}</button>
+  </span>
+
+  <button type="button" class="cl-element cl-paginator-next cl-paginator-element"
+          [ngClass]="{'cl-disabled':  pageLinks[pageLinks.length-1] == totalPages}"
+          (click)="changePage('next')">
+    <span class="cl-paginator-icon pi pi-angle-right"></span>
+  </button>
+
+  <button type="button" class="cl-ripple cl-element cl-paginator-last cl-paginator-element"
+          [ngClass]="{'cl-disabled': pageLinks[pageLinks.length-1] == totalPages}"
+          (click)="changePage('last')">
+    <span class="cl-paginator-icon pi pi-angle-double-right"></span>
+  </button>
+
+  <cl-select [options]="mappedRowPerPageOptions" [showClearIcon]="false" (onSelect)="changeRows($event)" [ngModel]="rows" *ngIf="showRowSelection"></cl-select>
+
+</div>

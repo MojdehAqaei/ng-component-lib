@@ -1,0 +1,70 @@
+<div class="cl-file-uploader cl-file-uploader-advanced cl-component " [ngClass]="styleClasses">
+  <div class="cl-file-uploader-buttonbar">
+
+    <!-- select file -->
+    <cl-button [styleClasses]="'cl-file-uploader-choose'"
+               [label]="chooseLabel"
+               type="info"
+               icon="select_check_box"
+               size="sm"
+               [disabled]="disabled || (fileLimit ? auto ? files.length > 0 && fileLimit <= files.length! : selectedFile.length > 0 && fileLimit <= selectedFile.length! : false)">
+      <input type="file" [id]="fileInputId" [accept]="accept" (input)="onFileSelect()">
+    </cl-button>
+
+    <!-- upload file -->
+    @if (!auto  && selectedFile?.length) {
+      <cl-button [label]="uploadLabel"
+                 type="info"
+                 icon="upload"
+                 size="sm"
+                 (onClick)="upload()"/>
+    }
+  </div>
+
+  @if (files?.length || selectedFile?.length) {
+    <div class="cl-file-uploader-content">
+      @for (file of selectedFile; track file.name) {
+        <div class="cl-file-uploader-input-file">
+          <cl-loading mode="determinate"/>
+
+          <div class="cl-file-uploader-file">
+            <img *ngIf="file.type.includes('image/')" [src]="selectedFileImage[$index]" width="50" />
+            <div class="cl-file-uploader-filename">{{file.name}}</div>
+            <div>{{formatBytes(file.size)}}</div>
+            <div class="cl-file-remove">
+              <i class="material-icons red-text text-darken-2" (click)="clear($index)">cancel</i>
+            </div>
+          </div>
+        </div>
+
+        @if (file.messages && file.messages.length) {
+          <cl-alert-message [messages]="file.messages"/>
+        }
+
+        @if ($index != (selectedFile.length - 1)) {
+          <cl-divider/>
+        }
+      }
+
+      <div class="cl-file-uploader-files">
+        @for (file of files; track file.name) {
+          <cl-file-downloader [size]="'sm'"
+                              [type]="fileBtnType"
+                              [label]="file.name || '-'"
+                              [outlined]="true"
+                              [downloadEndpoint]="fileDownloadUrl || ''"
+                              [downloadParams]="downloadParams"
+                              [deleteEndpoint]="fileDeleteUrl || ''"
+                              [deleteParams]="deleteParams"
+                              [deleteConfirmDialogConfig]="deleteConfirmDialogConfig"
+                              (onOpen)="onFileActionMenuOpen.emit({action: $event, row: file})"
+                              (onDelete)="remove($index)"
+                              (onDownload)="onDownload.emit($event)"
+                              [deleteAble]="!disabled"/>
+        }
+
+      </div>
+    </div>
+  }
+
+</div>

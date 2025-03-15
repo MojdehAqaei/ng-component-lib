@@ -1,0 +1,22 @@
+<div #menu class="cl-context-menu" [ngClass]="{'cl-context-menu-show': show, styleClasses}" [ngStyle]="{'left.px': contextX, 'top.px': contextY}">
+   <ul class="cl-tree-container">
+      <ng-template #recursiveValue let-menuItems>
+          <li class="cl-treenode cl-context-menu-item" *ngFor="let item of menuItems" >
+              <div class="cl-treenode-content">
+                  <button  type="button" class="cl-treenode-toggler" [ngClass]="{'cl-disabled': !item.items}" (click)="onToggleItem(item)">
+                      <i *ngIf="item.items?.length" class="material-icons cl-treenode-toggler-icon-rtl" [ngClass]="{'cl-treenode-toggler-icon': item.expanded}">chevron_right</i>
+                  </button>
+                  <div (click)="onItemClick(item)" [ngClass]="{'hover': item.command}" class="cl-context-menu-item-inner">
+                      <span class="cl-treenode-icon material-icons" [ngClass]="item.iconClass">{{ item.icon }}</span>
+                      <span class="cl-treenode-label">{{ item.label }}</span>
+                  </div>
+              </div>
+              <ul class="cl-treenode-children" *ngIf="item.items && item.items.length > 0 && item.expanded">
+                  <ng-container *ngTemplateOutlet="recursiveValue; context:{ $implicit: item.items }"></ng-container>
+              </ul>
+          </li>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="recursiveValue; context:{ $implicit: menuItems }"></ng-container>
+  </ul>
+</div>
+

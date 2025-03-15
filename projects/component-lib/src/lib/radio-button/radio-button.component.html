@@ -1,0 +1,4 @@
+<div [ngClass]="styleClasses == '' ? 'cl-radiobutton-field': styleClasses">
+    <input class="cl-radiobutton" id="radio" type="radio" [value]="value" [name]="name" [checked]="checked" [ngClass]="{'cl-disabled':disabled}" (change)="onSelect($event)">
+    <label class="cl-radiobutton-label" for="radio">{{label}}</label>
+</div>

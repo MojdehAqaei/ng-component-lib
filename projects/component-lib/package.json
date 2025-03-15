@@ -1,0 +1,21 @@
+{
+  "name": "@sadad/component-lib",
+  "version": "6.0.1",
+  "description": "component library, compatible with angular 17 and onward",
+  "maintainers": [
+    "Mojdeh Aqaei",
+    "Mahsa Kazempanah"
+  ],
+  "repository": {
+    "url": "https://vcs.sadad.co.ir/projects/ACL"
+  },
+  "keywords": [
+    "Angular 17.3",
+    "Storybook 8.0"
+  ],
+  "author": "Setadi Team",
+  "homepage": "http://192.168.34.56:81",
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}

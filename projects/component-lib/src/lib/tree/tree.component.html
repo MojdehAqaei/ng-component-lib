@@ -1,0 +1,76 @@
+<div class="cl-tree" [ngClass]="styleClasses">
+  @if (filterable && data.length > 0) {
+    <div class="cl-tree-filter-container">
+      <cl-input-text styleClasses="cl-tree-filter-input"
+                     type="text"
+                     autocomplete="off"
+                     icon="search"
+                     (onInputChange)="filterInputChange($event)"/>
+    </div>
+  }
+
+  @if (loading) {
+    @if (!data.length) {
+      <div class="cl-tree-loading">
+        <div [clSkeleton]="loading"></div>
+        <div [clSkeleton]="loading"></div>
+        <div [clSkeleton]="loading"></div>
+      </div>
+    }
+  } @else {
+    <ul class="cl-tree-container">
+      <ng-container *ngTemplateOutlet="recursiveValue; context:{ nodes:filterNodes}"/>
+    </ul>
+  }
+</div>
+
+
+<ng-template #recursiveValue let-nodes="nodes">
+  @for (node of nodes; track node.label) {
+    <li class="cl-treenode">
+      <div class="cl-treenode-content"
+           [ngClass]="{'cl-treenode-selectable':selectable, 'cl-highlight':selectionMode === 'single' && node.selected}"
+           (contextmenu)="onRightClick(node)">
+        <button type="button"
+                class="cl-treenode-toggler"
+                [style.visibility]="node.children?.length || !node.leaf ? 'visible' : 'hidden'"
+                (click)="onToggleItem(node)">
+          <i class="material-icons cl-treenode-toggler-icon-rtl" [ngClass]="{'cl-treenode-toggler-icon': node.expanded}">chevron_right</i>
+        </button>
+
+        @if(selectable && selectionMode === 'multiple') {
+          <cl-checkbox [value]="dataKey ? node.data[dataKey] : node.data"
+                       [ngModel]="selection"
+                       [disabled]="node.disabled"
+                       (onCheck)="onNodeClick(node)"
+                       [styleClasses]="!node.selected ? node.partialSelected ? 'partial-selected': node.allChildrenSelected ? 'all-children-selected' : '' : ''"/>
+        }
+
+        <div (click)="onNodeClick(node)" style="align-items: center; display: flex;"
+             [ngClass]="{'cl-disabled ':node.disabled}">
+
+          @if (templateRef && templateRef.template) {
+            <ng-container [ngTemplateOutlet]="templateRef.template!"
+                          [ngTemplateOutletContext]="{node}"/>
+          } @else {
+            <ng-container>
+              <span class="cl-treenode-icon material-icons">{{ node.icon }}</span>
+              @if (node.badgeLabel) {
+                <span class="cl-treenode-label" clBadge [badgeType]="node.badgeType" [badgeLabel]="node.badgeLabel">{{ node.label }}</span>
+              } @else {
+                <span class="cl-treenode-label">{{ node.label }}</span>
+              }
+            </ng-container>
+          }
+
+        </div>
+      </div>
+
+      @if (node.children && node.children.length > 0 && node.expanded) {
+        <ul class="cl-treenode-children">
+          <ng-container *ngTemplateOutlet="recursiveValue; context:{ nodes: node.children}"/>
+        </ul>
+      }
+    </li>
+  }
+</ng-template>

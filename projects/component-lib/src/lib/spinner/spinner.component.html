@@ -1,0 +1,8 @@
+<div [ngClass]="classes" *ngIf="show">
+    <svg viewBox="25 25 50 50" class="cl-spinner-svg" >
+        <circle cx="50" cy="50" r="20" class="cl-spinner-circle" 
+        [@changeColor]="{value: iteration, params:{color0: colorList[0], color1: colorList[1], color2: colorList[2], color3: colorList[3]}}" 
+        (@changeColor.done)="iteration = !iteration">
+        </circle>
+    </svg>
+</div>

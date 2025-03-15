@@ -1,0 +1,76 @@
+<div class="cl-treetable cl-treetable-hoverable-rows" [ngClass]="tableStyleClasses">
+
+  <div class="cl-treetable-wrapper" [ngStyle]="{'max-height':scrollHeight }">
+
+    <table class="cl-treetable-table">
+
+      <!-- table header-->
+      <thead class="cl-treetable-thead" [ngClass]="{'cl-no-sticky': noStickyHead}">
+      <tr>
+        <th *ngFor="let col of cols"
+            [attr.colSpan]="col.colSpan"
+            [style.min-width]="getColWidth(col.colSpan)">
+          {{col.header}}
+        </th>
+      </tr>
+      </thead>
+
+      <tbody class="cl-element cl-treetable-tbody">
+
+      <ng-container *ngFor="let node of data;let nodeIndex= index">
+        <ng-container
+          *ngIf="hasPaginator ?  rows * (currentPage -1) <= nodeIndex && nodeIndex < rows * currentPage  : true">
+          <ng-container *ngTemplateOutlet="recursiveValue; context:{ node:node,indent:0}"></ng-container>
+        </ng-container>
+      </ng-container>
+      </tbody>
+      <!--footer-->
+      <tfoot class="cl-treetable-tfoot">
+      <tr *ngIf="!data?.length">
+        <td [attr.colSpan]="totalColSpan"> نتیجه ای یافت نشد</td>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+
+
+  <!--paginator-->
+  <cl-paginator *ngIf="hasPaginator && data?.length"
+                [rows]="rows"
+                styleClasses="cl-paginator-bottom"
+                [totalRecords]="totalRecords"
+                (onPageChange)="changePage($event)"
+                [showRowSelection]="!!rowsPerPageOptions?.length"
+                [rowsPerPageOptions]="rowsPerPageOptions"></cl-paginator>
+
+</div>
+
+<ng-template #recursiveValue let-node="node" let-parent="parent" let-indent="indent">
+  <ng-container *ngIf="templateRef && templateRef.template" [ngTemplateOutlet]="templateRef.template"
+                [ngTemplateOutletContext]="{node,parent,indent}"></ng-container>
+  <tr class="cl-treeTable-row" *ngIf="!templateRef">
+    <td *ngFor="let col of cols;let colIndex = index" [attr.colSpan]="col.colSpan" [ngStyle]="{'text-indent':(colIndex == 0 && indent ?indent : 0)+'rem'}"
+        [ngClass]="getColStyleClasses(col, node.data)"
+        [style.min-width]="getColWidth(col.colSpan)">
+
+      <ng-container *ngIf="colIndex == 0">
+        <i class="cl-row-toggler" [style.visibility]="node.children && node.children.length > 0 ? 'visible':'hidden'" [ngClass]="node.expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"(click)="onToggleItem(node)"></i>
+        <cl-checkbox  *ngIf="selectable" [value]="dataKey ? node.data[dataKey] : node.data" [ngModel]="selectedRows" [disabled]="node.disabled" (onCheck)="onNodeClick(node)" [styleClasses]="!node.selected && node.partialSelected ? 'partial-selected': ''"></cl-checkbox>
+      </ng-container>
+
+      <span class="cl-column-title">{{col.header}}</span>
+      <ng-container *ngFor="let val of col.value; let valIndex = index">
+        <span *ngIf="col?.type == tableColumnType.TEXT">{{getColValue(node.data, col, val, valIndex)}}</span>
+        <i *ngIf="col?.type == tableColumnType.BOOLEAN" class="material-icons"
+           [ngClass]="{'green-text': node.data[val] ,'red-text': !node.data[val]}">{{node.data[val] ? 'check' : 'clear'}}</i>
+      </ng-container>
+      <i *ngIf="col?.type == tableColumnType.ACTION" (click)="col?.command(node.data,parent)"
+         [ngClass]="getActionColStyleClasses(node.data,col)" class="material-icons cl-hover">{{col?.icon}}</i>
+    </td>
+  </tr>
+  <ng-container *ngIf="node.children && node.children.length > 0 && node.expanded">
+    <ng-container *ngFor="let childNode of node.children">
+      <ng-container *ngTemplateOutlet="recursiveValue; context:{ node: childNode , parent:node, indent: indent + 1 }"></ng-container>
+    </ng-container>
+  </ng-container>
+</ng-template>

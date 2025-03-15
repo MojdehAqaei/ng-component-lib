@@ -1,0 +1,33 @@
+<div class="cl-side-menu cl-component"
+     [ngStyle]="{'width':openMenu ? '300px' : showIconsOnClose ? '90px' : '0px'}"
+     *ngIf="menu?.length"
+     [ngClass]="classes">
+  <i class="material-icons cl-side-menu-close" [ngStyle]="{'opacity':  !openMenu ? '0' : '1'}" (click)="$event.preventDefault();$event.stopPropagation();openCloseMenu(false)">clear</i>
+
+  <!-- logo -->
+  <cl-image *ngIf="logoSrc" styleClasses="cl-side-menu-logo" [src]="logoSrc" imgLink="/"/>
+
+  <!-- menu items -->
+  <ng-container [ngTemplateOutlet]="subMenu" [ngTemplateOutletContext]="{list:menu,isRoot:true}"></ng-container>
+</div>
+
+
+<!-- menu items template -->
+<ng-template #subMenu let-list="list" let-isRoot="isRoot">
+  <ul class="cl-menu-panel" [ngClass]="{'cl-menu-panel-root':isRoot}">
+    <li class="cl-menuitem" *ngFor="let item of list">
+      <a class="cl-menuitem-link"
+         [ngClass]="{'close': !openMenu}"
+         [routerLink]="item.routerLink"
+         [routerLinkActive]="'is-active'"
+         (click)="$event.preventDefault();$event.stopPropagation();onItemClick(list ,item)">
+        <span class="cl-menuitem-toggle-icon pi" (click)="$event.stopPropagation();toggleItem(list , item)" [ngClass]="{'toggle-hide': !item?.items?.length ,'pi-chevron-right':!item.expanded , 'pi-chevron-down':item.expanded }"></span>
+        <span class="cl-menuitem-icon material-icons" [ngClass]="item.iconClass || ''" (mouseover)="$event.stopPropagation();showMenuOnHover()">{{item.icon}}</span>
+        <span class="cl-menuitem-text">{{item.label}}</span>
+      </a>
+      <div class="cl-sub-menu" *ngIf="openMenu && item?.items?.length" [ngClass]="{'cl-menuitem-expand': item.expanded}">
+        <ng-container *ngIf="item.expanded" [ngTemplateOutlet]="subMenu" [ngTemplateOutletContext]="{list:item?.items}"></ng-container>
+      </div>
+    </li>
+  </ul>
+</ng-template>

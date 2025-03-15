@@ -1,0 +1,10 @@
+<div class="cl-color-picker" [ngClass]="styleClasses">
+  <div class="cl-color-picker-button">
+    <cl-button [label]="label" [icon]="icon" (onClick)="colorClicked()"></cl-button>
+  </div>
+  <div class="cl-color-picker-panel" *ngIf="showColorList">
+    <span class="cl-color-picker-item" *ngFor="let color of colorList" [ngStyle]="{'background-color': color}"
+          (click)="$event.stopPropagation();onSelect.emit(color);showColorList = false"></span>
+  </div>
+</div>
+

@@ -1,0 +1,33 @@
+<div class="cl-tour-start-btn" *ngIf="showStartBtn" (click)="start()">
+  <i class="material-icons">subscriptions</i>
+</div>
+<div class="cl-tour" *ngIf="step">
+
+<cl-dialog #dialogComponent [closeable]="false" position="bottom" width="auto">
+    <div class="cl-tour-container">
+      <p class="cl-tour-step-content" [innerHTML]="step?.content"></p>
+      <ul class="cl-tour-step-bullets">
+        <li *ngFor="let s of steps"  [ngClass]="{'cl-active': s.stepId ==  step.stepId}" (click)="_tourService.goToStep(s)"></li>
+      </ul>
+      <div class="cl-tour-step-navigation">
+        <cl-button *ngIf="_tourService.hasPrev(step)"
+                   [label]="prevBtnTitle"
+                   [size]="'sm'"
+                   [type]="buttonType.info"
+                   (onClick)="_tourService.prev()"></cl-button>
+        <cl-button
+          *ngIf="_tourService.hasNext(step)"
+          [label]="nextBtnTitle"
+          [size]="'sm'"
+          [type]="buttonType.success"
+          (onClick)="_tourService.next()">
+        </cl-button>
+        <cl-button
+          [label]="endBtnTitle"
+          [size]="'sm'"
+          [type]="buttonType.danger"
+          (onClick)="_tourService.end()"></cl-button>
+      </div>
+    </div>
+  </cl-dialog>
+</div>

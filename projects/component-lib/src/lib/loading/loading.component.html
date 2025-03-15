@@ -1,0 +1,27 @@
+<!-- determinate -->
+<ng-container *ngIf="mode == 'determinate'">
+  <div [ngClass]="styleClass"
+       role="progressbar"
+       aria-valuemin="0"
+       aria-valuemax="100"
+       [attr.aria-valuenow]="value"
+       [class.cl-progressbar-hide]="value == 100"
+       class="cl-progressbar cl-component">
+    <div class="cl-progressbar-value cl-progressbar-value-animate" [style.width]="value + '%'"></div>
+  </div>
+</ng-container>
+
+
+<!-- indeterminate -->
+<ng-container *ngIf="mode == 'indeterminate'">
+  <div [ngClass]="styleClass" *ngIf="loading">
+    <div role="progressbar"
+         class="cl-progressbar cl-component">
+      <div class="cl-progressbar-container">
+        <div class="cl-progressbar-indeterminate-value cl-progressbar-indeterminate-value-animate"></div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+

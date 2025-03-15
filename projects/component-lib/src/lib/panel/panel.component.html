@@ -1,0 +1,33 @@
+<div class="cl-panel cl-component" [ngClass]="styleClasses">
+  <div *ngIf="header || headerTemplate" class="cl-panel-header-wrapper">
+    <div class="cl-panel-header" *ngIf="header">
+      <i class="material-icons">{{ icon }}</i> {{ header }}
+      <span class="cl-panel-subheader" *ngIf="subHeader">{{ subHeader }}</span>
+    </div>
+    <div class="cl-panel-header-action" *ngIf="headerTemplate">
+      <ng-container *ngTemplateOutlet="headerTemplate.template"></ng-container>
+    </div>
+  </div>
+
+  <div class="cl-panel-content">
+    <ng-content></ng-content>
+  </div>
+
+  <div *ngIf="actionList?.length" class="cl-panel-footer">
+        <div class="cl-panel-actions">
+            <div *ngFor="let item of actionList" class="cl-panel-action-btn">
+                <cl-button [label]="item.label"
+                           [disabled]="item?.disabled!"
+                           [loading]="item?.loading!"
+                           [icon]="item?.icon"
+                           [iconPosition]="item.iconPosition"
+                           [size]="item?.size"
+                           [styleClasses]="item?.styleClass!"
+                           [type]="item?.type"
+                           (onClick)="item?.command ? item?.command($event) : null">
+                </cl-button>
+            </div>
+        </div>
+
+    </div>
+</div>

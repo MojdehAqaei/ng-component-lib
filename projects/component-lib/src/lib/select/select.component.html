@@ -1,0 +1,45 @@
+<div class="cl-select" [ngClass]="classes">
+  <div class="cl-select-label-container" [ngClass]="{'cl-disabled': disabled}"  #labelContainer>
+    <div class="cl-select-label" [ngClass]="{'cl-placeholder': !selectedLabel}"
+         (click)="displayDialog()">{{multiple && selectedOptions && selectedOptions?.length ? selectedOptions?.length + '  مورد انتخاب شده است' : selectedLabel || placeholder}}</div>
+    <div class="cl-select-icons">
+      <span class="cl-select-close material-icons"
+            *ngIf="showClearIcon && (multiple ?  selectedOptions?.length : selectedLabel)"
+            (click)="$event.stopPropagation();clear()">clear</span>
+      <span class="cl-select-trigger-icon  material-icons" (click)="displayDialog()">expand_more</span>
+    </div>
+  </div>
+
+  <div class="cl-select-panel cl-component" *ngIf="showDialog"  [style.top.px]="labelContainer.clientHeight + 3">
+    <div class="cl-select-header" *ngIf="filterable">
+      <cl-checkbox [binary]="true"  [(ngModel)]="allSelected" (onCheck)="selectAll($event)"
+                   *ngIf="multiple && filterOptions?.length"></cl-checkbox>
+      <cl-input-text type="text"
+                     clAutoFocus
+                     [placeholder]="filterPlaceholder"
+                     [(ngModel)]="filterValue"
+                     (onInputChange)="onFilter($event)"/>
+    </div>
+
+
+    <div class="cl-select-items-wrapper">
+      <ul class="cl-select-items">
+        <cdk-virtual-scroll-viewport *ngIf="filterOptions?.length" itemSize="10" [style.height]="containerHeight">
+          <ng-container *ngFor="let item of filterOptions">
+            <li class="cl-select-item" *ngIf="multiple">
+              <cl-checkbox (click)="$event.stopPropagation();" (onCheck)="selectMultipleOption($event)"
+                           [label]="item.label" [value]="optionValue ? item.value[optionValue] : item.value"
+                           [(ngModel)]="selectedOptions"></cl-checkbox>
+            </li>
+            <li class="cl-select-item" *ngIf="!multiple" (click)="selectSingleOption(item)">{{item.label}}</li>
+          </ng-container>
+          <li class="cdk-virtual-scroll-spacer" style="height: 10px;"></li>
+        </cdk-virtual-scroll-viewport>
+        <li class="cl-select-empty-message"
+            *ngIf="!filterOptions?.length"> {{loading ? ' در حال جستجو' : 'نتیجه ای یافت نشد'}}</li>
+      </ul>
+
+    </div>
+  </div>
+</div>
+

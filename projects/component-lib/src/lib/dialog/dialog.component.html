@@ -1,0 +1,40 @@
+<div class="cl-dialog-mask"  [ngStyle]="{'z-index':baseZIndex + 1 ,visibility: visible ? 'visible' : 'hidden'}">
+<div class="cl-dialog" [ngClass]="classes" [ngStyle]="{'width':width }" #dialog>
+  @if(visible) {
+
+    <!-- header -->
+    @if (headerTemplateRef || header || closeable) {
+      <div class="cl-dialog-header">
+        @if(headerTemplateRef) {
+          <ng-container [ngTemplateOutlet]="headerTemplateRef" />
+        } @else {
+          <span class="cl-dialog-title">{{header}}</span>
+        }
+
+        @if (resizeable) {
+          <span class="cl-dialog-header-maximize-icon pi pi-window-minimize"
+                [ngClass]="{'pi-window-minimize': fullPage,'pi-window-maximize': !fullPage}"
+                (click)="goFullPage()"></span>
+        }
+
+        @if (closeable) {
+          <div class="cl-dialog-header-icon pi pi-times" (click)="hide()"></div>
+        }
+      </div>
+    }
+
+    <!-- content -->
+    <div class="cl-dialog-content" [style.min-height.px]="minHeight">
+      <ng-content></ng-content>
+    </div>
+
+    <!-- footer -->
+    @if (footerTemplateRef) {
+      <div class="cl-dialog-footer">
+        <ng-container  [ngTemplateOutlet]="footerTemplateRef" />
+      </div>
+    }
+  }
+
+</div>
+</div>

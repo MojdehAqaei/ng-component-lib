@@ -1,0 +1,5 @@
+<span [ngClass]="styles">
+    <i class="material-icons" *ngIf="icon">{{icon}}</i>
+    <input appClickOutside class="cl-inputtext" [readonly]="readonly" [maxlength]="maxLength || null" [type]="type" [(ngModel)]="inputValue" [placeholder]="placeholder" [readOnly]="readonly"
+           (input)="change()" (keyup.enter)="onEnter.emit(inputValue)" [disabled]="!!disabled" [ngClass]="{'cl-disabled':disabled, 'cl-readonly':readonly}"/>
+</span>

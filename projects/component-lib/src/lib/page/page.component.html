@@ -1,0 +1,20 @@
+<div [ngClass]="classes">
+  <div class="cl-page-bg"></div>
+  <div class="cl-page-bg cl-page-bg2"></div>
+  <div class="cl-page-bg cl-page-bg3"></div>
+
+  <div class="cl-page-content">
+    <h3> <i class="material-icons cl-page-icon">{{icon}}</i> {{header}}</h3>
+    <p>{{subHeader}}</p>
+
+    @if (type != 'loading') {
+      <cl-link title="بازگشت به صفحه اصلی"
+               icon="arrow_forward"
+               underline="none"
+               [routerLink]="'/'"
+               [color]="linkType"
+               (onClick)="onClick.emit()"/>
+    }
+
+  </div>
+</div>

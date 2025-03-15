@@ -1,0 +1,10 @@
+<div class="cl-alert-messages"  [ngClass]="styleClasses">
+  <div class="cl-alert-message" *ngFor="let message of messages;let i=index"  [ngClass]="'cl-alert-message-'+message.type" #messageEl>
+    <span class="material-icons cl-alert-message-icon">{{ message.icon }}</span>
+    <span class="cl-alert-message-summary" *ngIf="message.summary" [innerHTML]="message.summary"></span>
+    <span class="cl-alert-message-detail" [innerHTML]="message.detail"></span>
+    <button *ngIf="message.closeable" class="cl-alert-message-close" (click)="onHideMessage(i,messageEl)">
+      <i class="material-icons" style="font-size: 20px">close</i>
+    </button>
+</div>
+</div>

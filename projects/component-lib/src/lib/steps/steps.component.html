@@ -1,0 +1,39 @@
+<div class="cl-steps">
+    <ul>
+      @for (step of steps; track $index) {
+        <li class="cl-steps-item"
+            [class.cl-highlight]="activeIndex === $index"
+            (click)="selectStep(step, $index)">
+          <a class="cl-stepsitem-link" [style.cursor]="readonly || !steps[$index].status ?  'not-allowed' :'pointer'">
+            <span class="cl-steps-number">{{ $index + 1 }}.</span>
+            <span class="cl-steps-title">{{ step.label }}</span>
+          </a>
+        </li>
+      }
+    </ul>
+</div>
+<cl-alert-message *ngIf="steps && steps?.length && activeIndex && steps[activeIndex].alertMessage?.length" [messages]="steps[activeIndex].alertMessage!"></cl-alert-message>
+
+<ng-content></ng-content>
+
+<footer class="cl-steps-footer">
+  @if (activeIndex != 0 && prevAllowed) {
+    <cl-button [label]="backBtnLabel"
+               [size]="backBtnSize"
+               [type]="backBtnType"
+               (onClick)="backClicked()"/>
+  }
+
+  @if (activeIndex != steps.length - 1) {
+    <cl-button [label]="nextBtnLabel"
+               [size]="nextBtnSize"
+               [type]="nextBtnType"
+               (onClick)="nextClicked()"/>
+  } @else {
+    <cl-button [label]="confirmBtnLabel"
+               [size]="confirmBtnSize"
+               [type]="confirmBtnType"
+               (onClick)="confirmClicked()"/>
+  }
+
+</footer>

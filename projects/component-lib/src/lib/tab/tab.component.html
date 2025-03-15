@@ -1,0 +1,30 @@
+<div class="cl-tab" [ngClass]="styleClasses">
+    <div class="cl-tab-container">
+      <!-- [class.hide]="!isRtl && atStart" -->
+      <button *ngIf="scrollable" class="cl-tab-nav-btn left" (click)="scrollTab(-100)"  >
+        <i class="material-icons">chevron_left</i>
+      </button>
+      <div class="cl-tab-nav-content" id="content">
+        <!-- 'transform': scrollable ? scroll : '',  -->
+        <ul class="cl-tab-nav" [ngStyle]="{'flex-wrap': scrollable ? '' : 'wrap', 'padding-right': scrollable ? '3rem': '', 'padding-left': scrollable ? '3rem': ''}">
+          <li *ngFor="let tab of tabs;let i=index"
+              (click)="selectTab(tab, i)"
+              class="cl-tab-item"
+              [class.cl-highlight]="tab.active">
+                <span class="cl-tab-nav-link">
+                  <i class="material-icons" style="font-size: 20px" *ngIf="tab.icon">{{tab.icon}}</i>
+                  <span class="cl-tab-nav-link-text">{{ tab.title }}</span>
+                </span>
+          </li>
+        </ul>
+      </div>
+      <!-- [class.hide]="isRtl && atStart" -->
+      <button *ngIf="scrollable" class="cl-tab-nav-btn right" (click)="scrollTab(100)" >
+        <i class="material-icons">chevron_right</i>
+      </button>
+    </div>
+    <div class="cl-tab-panels">
+        <ng-content></ng-content>
+    </div>
+
+</div>

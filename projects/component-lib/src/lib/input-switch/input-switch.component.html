@@ -1,0 +1,7 @@
+<div class="cl-input-switch" [ngClass]="styleClasses">
+  <label 
+    class="cl-input-switch-slider"
+    (click)="toggleChecked()" 
+    [ngClass]="{ 'checked' : isChecked, 'cl-disabled': disabled }">
+  </label>
+</div>

@@ -1,0 +1,62 @@
+<div class="cl-toolbar" [ngClass]="styleClasses">
+  <div class="cl-toolbar-items">
+    <ng-container *ngIf="!startTemplateRef && actions">
+      <ng-container *ngTemplateOutlet="items; context:{ $implicit: 'start'}"></ng-container>
+    </ng-container>
+    <ng-container *ngIf="startTemplateRef" [ngTemplateOutlet]="startTemplateRef"></ng-container>
+  </div>
+
+  <div class="cl-toolbar-items">
+    <ng-container *ngIf="!centerTemplateRef && actions">
+      <ng-container *ngTemplateOutlet="items; context:{ $implicit: 'center'}"></ng-container>
+    </ng-container>
+    <ng-container *ngIf="centerTemplateRef" [ngTemplateOutlet]="centerTemplateRef"></ng-container>
+  </div>
+
+  <div class="cl-toolbar-items">
+    <ng-container *ngIf="!endTemplateRef && actions">
+      <ng-container *ngTemplateOutlet="items; context:{ $implicit: 'end'}"></ng-container>
+    </ng-container>
+    <ng-container *ngIf="endTemplateRef" [ngTemplateOutlet]="endTemplateRef"></ng-container>
+  </div>
+</div>
+
+
+<ng-template #items let-dir>
+  <ng-container *ngFor="let action of actions">
+    <ng-container *ngIf="action.direction === dir">
+      <ng-container *ngFor="let item of action.items">
+        <i *ngIf="item.type == 'icon' " class="material-icons cl-toolbar-items-action"
+           [clTooltip]="item.tooltip"
+           [ngClass]="item.styleClasses || ''"
+           (click)="item?.command && item?.command($event)">{{item.icon}}</i>
+
+        <span *ngIf="item.type== 'text'"
+              [clTooltip]="item.tooltip"
+              [ngClass]="item.styleClasses || ''"
+              class="cl-toolbar-items-action"
+              (click)="item?.command && item?.command($event)">{{item.label}}</span>
+
+        <cl-avatar *ngIf="item.type == 'avatar'"
+                   [type]="item.image ? 'img' : item.icon ? 'icon' : 'label'"
+                   [value]="item.image || item.icon || item.label || ''"
+                   [styleClasses]="item.styleClasses || ''"
+                   [clTooltip]="item.tooltip"
+                   class="cl-toolbar-items-action"
+                   (click)=" item?.command && item?.command($event)"></cl-avatar>
+
+        <cl-button *ngIf="item.type == 'button'"
+                   [label]="item.label"
+                   [disabled]="item.disabled!"
+                   [loading]="item.loading!"
+                   [icon]="item.icon"
+                   [styleClasses]="item.styleClasses || ''"
+                   [type]="item.buttonType"
+                   [clTooltip]="item.tooltip"
+                   class="cl-toolbar-items-action"
+                   (onClick)="item?.command && item?.command($event)"></cl-button>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+
+</ng-template>

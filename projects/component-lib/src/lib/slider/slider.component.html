@@ -1,0 +1,75 @@
+<div [class]="styleClasses"
+     [ngClass]="{ 'cl-slider cl-slider-horizontal cl-component': true, 'cl-disabled': disabled }"
+     (click)="onBarClick($event)">
+
+          <span
+            *ngIf="range"
+            class="cl-slider-range"
+            [ngStyle]="{ left: offset !== null && offset !== undefined ? offset + '%' : handleValues[0] + '%', width: diff ? diff + '%' : handleValues[1] - handleValues[0] + '%' }"
+            [attr.data-pc-section]="'range'"
+          ></span>
+
+  <!-- range -->
+  <span *ngIf="!range" class="cl-slider-range" [attr.data-pc-section]="'range'" [ngStyle]="{ width: handleValue + '%' }"></span>
+
+  <!-- handle without range -->
+  <span
+    *ngIf="!range"
+    #sliderHandle
+    class="cl-slider-handle"
+    [style.transition]="dragging ? 'none' : null"
+    [ngStyle]="{ left: handleValue + '%', bottom: null }"
+    (touchstart)="onDragStart($event)"
+    (touchmove)="onDrag($event)"
+    (touchend)="onDragEnd($event)"
+    (mousedown)="onMouseDown($event)"
+    (keydown)="onKeyDown($event)"
+    [attr.tabindex]="disabled ? null : tabindex"
+    role="slider"
+    [attr.aria-valuemin]="min"
+    [attr.aria-valuenow]="value"
+    [attr.aria-valuemax]="max"
+    [attr.data-pc-section]="'handle'"
+  ></span>
+
+  <!-- handle with range - start -->
+  <span
+    *ngIf="range"
+    #sliderHandleStart
+    [style.transition]="dragging ? 'none' : null"
+    class="cl-slider-handle"
+    [ngStyle]="{ left: rangeStartLeft, bottom: 'auto' }"
+    [ngClass]="{ 'cl-slider-handle-active': handleIndex == 0 }"
+    (keydown)="onKeyDown($event, 0)"
+    (mousedown)="onMouseDown($event, 0)"
+    (touchstart)="onDragStart($event, 0)"
+    (touchmove)="onDrag($event)"
+    (touchend)="onDragEnd($event)"
+    [attr.tabindex]="disabled ? null : tabindex"
+    role="slider"
+    [attr.aria-valuemin]="min"
+    [attr.aria-valuenow]="values ? values[0] : null"
+    [attr.aria-valuemax]="max"
+    [attr.data-pc-section]="'startHandler'"
+  ></span>
+
+  <!-- handle with range - end -->
+  <span
+    *ngIf="range"
+    #sliderHandleEnd
+    [style.transition]="dragging ? 'none' : null"
+    class="cl-slider-handle"
+    [ngStyle]="{ left: rangeEndLeft, bottom: 'auto' }"
+    [ngClass]="{ 'cl-slider-handle-active': handleIndex == 1 }"
+    (keydown)="onKeyDown($event, 1)"
+    (mousedown)="onMouseDown($event, 1)"
+    (touchstart)="onDragStart($event, 1)"
+    (touchmove)="onDrag($event)"
+    (touchend)="onDragEnd($event)"
+    [attr.tabindex]="disabled ? null : tabindex"
+    [attr.aria-valuemin]="min"
+    [attr.aria-valuenow]="values ? values[1] : null"
+    [attr.aria-valuemax]="max"
+    [attr.data-pc-section]="'endHandler'"
+  ></span>
+</div>

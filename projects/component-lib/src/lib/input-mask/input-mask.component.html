@@ -1,0 +1,7 @@
+<span [ngClass]="styles">
+    <i class="material-icons" *ngIf="icon">{{icon}}</i>
+   <input class="cl-inputtext cl-input-mask" type="text" [ngModel]="inputValue ? inputText :null" [placeholder]="inputText || mask"
+          *ngIf="!keyFilter" [disabled]="!!disabled" [ngClass]="{'cl-disabled':disabled}" (focus)="onFocus()"/>
+    <input class="cl-inputtext cl-input-mask" type="text" [ngModel]="inputValue ? inputText :null" [placeholder]="inputText ||mask"
+           *ngIf="keyFilter" [clKeyFilter]="keyFilter" [disabled]="!!disabled" [ngClass]="{'cl-disabled':disabled}" (focus)="onFocus()"/>
+</span>

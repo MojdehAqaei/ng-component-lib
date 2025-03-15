@@ -1,0 +1,32 @@
+<div class="cl-user-info-card" [ngClass]="styleClasses">
+  <div class="cl-user-info-card-header">
+    <span class="user-avatar">{{firstName?.charAt(0) +' ' +lastName?.charAt(0)}}</span>
+    <span>اطلاعات کاربر</span>
+  </div>
+  <div class="cl-user-info-card-content">
+    <div>
+      <span class="material-icons">assignment_ind</span>
+      <span class="cl-strong-text"> نام و نام خانوادگی : </span>
+      <label [clSkeleton]="loading">{{firstName +' '+lastName || '-'}}</label>
+    </div>
+    <div>
+      <span class="material-icons">subtitles</span>
+      <span class="cl-strong-text">کد ملی : </span>
+      <label  [clSkeleton]="loading">{{nationalCode || '-'}}</label>
+    </div>
+    <div>
+      <span class="material-icons">location_city</span>
+      <span class="cl-strong-text">واحد کاری : </span>
+      <label  [clSkeleton]="loading">{{organizationUnit || '-'}}</label>
+    </div>
+    <div>
+      <span class="material-icons">check_box</span>
+      <span class="cl-strong-text"> نقش : </span>
+      <label  [clSkeleton]="loading">{{role || '-'}}</label>
+    </div>
+    <div class="cl-button-container" *ngIf="showLogout"><cl-button label="خروج"  size="sm"  (click)="onLogout.emit()" ></cl-button></div>
+
+  </div>
+</div>
+
+

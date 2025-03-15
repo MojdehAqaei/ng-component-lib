@@ -1,0 +1,39 @@
+<div class="cl-header" [style.position]="positionFixed ? 'fixed' : 'unset'">
+  <div class="right-bar">
+    @if (hasToggleMenu) {
+      <i class="material-icons" (click)="$event.stopPropagation();toggleMenu()">{{menuIsOpen ? 'clear' : 'menu'}}</i>
+    }
+
+    @if (logoSrc) {
+      <cl-image class="logo" [src]="logoSrc" imgLink="/"/>
+    }
+
+    @if (appTitle) {
+      <h4 routerLink="/" >{{appTitle}}</h4>
+    }
+  </div>
+
+
+  <div class="left-bar">
+    @for (item of icons; let i = $index; track i) {
+      @switch (item.type) {
+        @case ('icon') {
+          <i class="material-icons" [clTooltip]="item.tooltip" [ngClass]="item.styleClasses || ''" (click)="item?.command && item?.command($event)">{{item.icon}}</i>
+        }
+        @case ('text') {
+          <span [ngClass]="item.styleClasses || ''" (click)="item?.command && item?.command($event)">{{item.label}}</span>
+        }
+        @case ('avatar') {
+          <cl-avatar [type]="item.image ? 'img' : item.icon ? 'icon' : 'label'"
+                     [value]="item.image || item.icon || item.label || ''"
+                     [styleClasses]="item.styleClasses || ''"
+                     (click)="item?.command &&item?.command($event)"/>
+        }
+      }
+    }
+
+    <ng-container [ngTemplateOutlet]="leftBar"></ng-container>
+
+  </div>
+
+</div>

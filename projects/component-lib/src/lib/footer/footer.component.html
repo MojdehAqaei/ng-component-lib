@@ -1,0 +1,17 @@
+<footer [ngClass]="styleClasses">
+  <div class="cl-footer" [ngClass]="{'cl-footer-fixed': positionFixed}">
+    <div class="cl-footer-content" *ngIf="columnsTemplate?.length">
+      <div class="cl-footer-content-item" *ngFor="let templateDirective of columnsTemplate.toArray()">
+        <ng-container *ngTemplateOutlet="templateDirective.template"></ng-container>
+      </div>
+    </div>
+
+    <div class="cl-footer-bottom" *ngIf="appVersion || lastUpdate ||copyRight">
+      <div class="cl-footer-right">
+        <span *ngIf="appVersion"> نسخه : {{ appVersion}}</span>
+        <span *ngIf="lastUpdate"> آخرین به روز رسانی :{{lastUpdate}}</span>
+      </div>
+      <div class="cl-footer-copyright" *ngIf="copyRight">© {{copyRight}}</div>
+    </div>
+  </div>
+</footer>

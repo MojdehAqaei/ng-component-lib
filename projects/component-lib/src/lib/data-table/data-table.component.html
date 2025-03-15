@@ -1,0 +1,341 @@
+<div class="cl-datatable cl-datatable-hoverable-rows" [ngClass]="tableStyleClasses" [formGroup]="filterFormGroup">
+  <!-- table caption-->
+  <ng-container [ngTemplateOutlet]="captionTemplateRef"/>
+
+  <div class="cl-datatable-wrapper" [ngStyle]="{'max-height':scrollHeight }">
+
+    <table class="cl-datatable-table">
+
+      <!-- table header-->
+      <thead class="cl-datatable-thead" [ngClass]="{'cl-no-sticky': noStickyHead}">
+          @if(!headerTemplateRef) {
+            <tr>
+              @if(rowExpand && !groupRowsBy) {
+                <th  style="width:50px"></th>
+              }
+
+              <th  style="white-space: nowrap;width:70px">ردیف</th>
+
+              <!-- selectable-->
+              @if(selectable) {
+                <th  style="width:50px">
+                  @if (dataList?.length) {
+                    <cl-checkbox [binary]="true" [(ngModel)]="tableSelected" [ngModelOptions]="{standalone:true}" (onCheck)="selectAll($event)"/>
+                  }
+                </th>
+              }
+
+              @if(groupRowsBy && rowGroupMode == 'rowspan') {
+                <th [attr.colspan]="2"  style="min-width:200px">عنوان گروه</th>
+              }
+
+              @for(col of cols; track col.value) {
+                <th [attr.colSpan]="col.colSpan"
+                    [ngClass]="{'cl-sortable-column' :sortable && col.sortBy ,'cl-highlight': col.sortType}"
+                    [style.min-width]="getColWidth(col.colSpan)"
+                    (click)="changeSortType(col)">
+                  {{col.header}}
+                  @if (sortable && col.sortBy) {
+                    <i class="cl-sortable-column-icon pi pi-fw "
+                       [ngClass]="{'pi-sort-amount-up-alt': col.sortType == 'asc' ,'pi-sort-alt': !col.sortType, 'pi-sort-amount-down': col.sortType == 'desc'}"></i>
+                  }
+                </th>
+              }
+
+              <!-- has action -->
+              @if(actions?.length) {
+                <th class="cl-table-action-cols" style="white-space: nowrap;min-width:100px">عملیات</th>
+              }
+
+            </tr>
+
+
+            <!-- filters -->
+            @if(filterable) {
+              <tr  class="cl-filter-row">
+                @if(rowExpand && !groupRowsBy) {
+                  <th></th>
+                }
+
+                <th></th>
+
+                @if(selectable) {
+                  <th></th>
+                }
+
+                @if(groupRowsBy && rowGroupMode == 'rowspan') {
+                  <th [attr.colspan]="2"  style="min-width:200px"></th>
+                }
+
+                @for(col of cols; track col.value) {
+                  <th [attr.colSpan]="col.colSpan"
+                      [style.min-width]="getColWidth(col.colSpan)">
+
+                    @if(col.filterSchema && filterFormGroup.contains('colFilter' + $index)) {
+                      @switch (col.filterSchema.controlType) {
+                        @case ('INPUT_TEXT') {
+                          <cl-input-text [formControlName]="'colFilter'+ $index"
+                                         [placeholder]="col.header"
+                                         (onInputChange)="getTableData()"/>
+                        }
+                        @case ('MULTISELECT') {
+                          <cl-select [multiple]="true"
+                                     [formControlName]="'colFilter' + $index"
+                                     [options]="col.filterSchema.options!"
+                                     (onSelect)="getTableData()"/>
+                        }
+                      }
+                    }
+                  </th>
+                }
+
+                @if(actions?.length) {
+                  <th></th>
+                }
+
+              </tr>
+            }
+          } @else {
+            <ng-container [ngTemplateOutlet]="headerTemplateRef"></ng-container>
+          }
+
+      </thead>
+
+      <!-- table body -->
+      <tbody class="cl-element cl-datatable-tbody">
+        <!-- lazy loading icon-->
+        @if(loading) {
+          <tr class="cl-datatable-loading-overlay">
+            <td [attr.colspan]="totalColSpan">
+              <i class="pi pi-spin pi-spinner"></i>
+            </td>
+          </tr>
+        }
+
+        @for(row of dataList; track row.data[dataKey]) {
+            @if(hasPaginator ? row.index && rows * (currentPage -1) < row.index && row.index  <= rows * currentPage  : true) {
+
+              <!-- table row-->
+              @if(!bodyTemplateRef && !groupRowsBy) {
+                <tr>
+                  <!--  rowExpand toggle icon-->
+                  @if(rowExpand) {
+                    <td (click)="row.expanded = !row.expanded; onRowExpand.emit(row)">
+                      <i  class="cl-row-toggler" [ngClass]="row.expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+                    </td>
+                  }
+
+                  <!--  row index-->
+                  <td>{{ row.index }}</td>
+
+                  <!--  row select checkbox-->
+                  @if (selectable) {
+                    <td>
+                      <cl-checkbox [value]="row.data" [(ngModel)]="selectedRows" [ngModelOptions]="{'standalone': true}"
+                                   (onCheck)="onSelect.emit(selectedRows)"/>
+                    </td>
+                  }
+
+                  <ng-container [ngTemplateOutlet]="dynamicColTemplate"
+                                [ngTemplateOutletContext]="{row: row,rowIndex: $index}"/>
+                </tr>
+              }
+
+              <!-- template ref -->
+              @if (bodyTemplateRef && !groupRowsBy) {
+                <ng-container [ngTemplateOutlet]="bodyTemplateRef"
+                              [ngTemplateOutletContext]="{row: row.data,index:$index}"/>
+              }
+
+              <!--row expansion-->
+              @if (!groupRowsBy && rowExpand && row.expanded) {
+                  <tr>
+                    <td [attr.colspan]="totalColSpan">
+                      @if (rowExpansionTemplateRef) {
+                        <ng-container [ngTemplateOutlet]="rowExpansionTemplateRef"
+                                      [ngTemplateOutletContext]="{data: row.data, $index}"/>
+                      }
+                    </td>
+                  </tr>
+              }
+
+
+              <!--row group-->
+              @if (groupRowsBy) {
+                  @switch (rowGroupMode) {
+                    @case ('subheader') {
+                        <!-- row group header -->
+                        <tr class="cl-rowgroup-header">
+                          <!--  rowExpand toggle icon-->
+                          <td (click)="row.expanded = !row.expanded">
+                            <i  class="cl-row-toggler" [ngClass]="row.expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+                          </td>
+                          @if (selectable) {
+                            <td>
+                              <cl-checkbox [binary]="true" [(ngModel)]="row.selected" [ngModelOptions]="{standalone: true}" (onCheck)="selectRowGroup($event ,row)"/>
+                            </td>
+                          }
+
+                          <td class="label" [attr.colspan]="selectable ? totalColSpan - 2 :totalColSpan -1 ">
+                            @if (groupHeaderTemplateRef) {
+                              <ng-container [ngTemplateOutlet]="groupHeaderTemplateRef"
+                                            [ngTemplateOutletContext]="{data : row}"/>
+                            } @else {
+                              {{row.data}}
+                            }
+                          </td>
+                        </tr>
+
+                        <!-- row group content -->
+                        @for (child of row.children; track child.data[dataKey]; let childIndex = $index) {
+                          @if (row.expanded) {
+                            <tr>
+                              <td>{{child.index}}</td>
+                              @if (selectable) {
+                                <td>
+                                  <cl-checkbox [value]="child.data" [(ngModel)]="selectedRows" [ngModelOptions]="{'standalone': true}"
+                                               (onCheck)="row.selected = groupIsSelected(row);onSelect.emit(selectedRows)"/>
+                                </td>
+                              }
+                              <ng-container  [ngTemplateOutlet]="dynamicColTemplate"
+                                             [ngTemplateOutletContext]="{row: child , rowIndex:childIndex}"/>
+                            </tr>
+                          }
+                        }
+
+                        <!-- row group footer -->
+                        @if (groupFooterTemplateRef && row.children && row.children.length) {
+                          <tr>
+                            <td [attr.colspan]="totalColSpan">
+                              <ng-container
+                                [ngTemplateOutlet]="groupFooterTemplateRef"
+                                [ngTemplateOutletContext]="{row : row}"/>
+                            </td>
+                          </tr>
+                        }
+                    }
+
+                    @case ('rowspan') {
+                        <!-- row group content -->
+                        @for (child of row.children; track child.data[dataKey]; let childIndex = $index) {
+                          <tr>
+                            <td>{{ child.index}}</td>
+
+                            <!--  row select checkbox-->
+                            @if (selectable) {
+                              <td>
+                                <cl-checkbox [value]="child.data" [(ngModel)]="selectedRows" [ngModelOptions]="{'standalone': true}"
+                                             (onCheck)="onSelect.emit(selectedRows)"/>
+                              </td>
+                            }
+
+                            @if (childIndex==0) {
+                              <td [attr.colspan]="2" [attr.rowspan]="row.children?.length">
+                                {{row.data}}
+                              </td>
+                            }
+
+                            <ng-container [ngTemplateOutlet]="dynamicColTemplate"
+                                          [ngTemplateOutletContext]="{row: child , rowIndex:childIndex}"></ng-container>
+                          </tr>
+                        }
+                    }
+                  }
+              }
+            }
+        }
+
+      </tbody>
+
+
+      <!--footer-->
+      <tfoot class="cl-datatable-tfoot">
+        @if (footerTemplateRef) {
+          <tr>
+            <td [attr.colSpan]="totalColSpan">
+              <ng-container [ngTemplateOutlet]="footerTemplateRef"></ng-container>
+            </td>
+          </tr>
+        } @else if (!dataList?.length && !loading) {
+          <tr>
+            <td [attr.colSpan]="totalColSpan"> نتیجه ای یافت نشد</td>
+          </tr>
+        }
+      </tfoot>
+    </table>
+  </div>
+
+
+
+  <!--summary-->
+  @if (summaryTemplateRef) {
+    <ng-container [ngTemplateOutlet]="summaryTemplateRef"/>
+  }
+
+  <!--paginator-->
+  @if (hasPaginator && dataList?.length) {
+    <cl-paginator [first]="first"
+                  [rows]="rows"
+                  styleClasses="cl-paginator-bottom"
+                  [totalRecords]="totalRecords"
+                  (onPageChange)="changePage($event)"
+                  [showRowSelection]="!!rowsPerPageOptions?.length"
+                  [rowsPerPageOptions]="rowsPerPageOptions"/>
+  }
+
+</div>
+
+
+<!--table row -->
+<ng-template let-row="row" let-rowIndex="rowIndex" #dynamicColTemplate>
+
+  <!-- cols -->
+  @for (col of cols; track col.value) {
+    <td [attr.colSpan]="col.colSpan"
+        [ngClass]="getColStyleClasses(col, row.data)"
+        [style.min-width]="getColWidth(col.colSpan)">
+
+      <span class="cl-column-title">{{col.header}}</span>
+
+      @for (val of col.value; track val; let valIndex = $index) {
+        @switch (col?.type) {
+          <!-- text -->
+          @case (tableColumnType.TEXT) {
+            <span>{{ getColValue(row.data, col , val , valIndex) }}</span>
+          }
+
+          <!-- boolean -->
+          @case (tableColumnType.BOOLEAN) {
+            <i class="material-icons"
+               [ngClass]="{'green-text': row.data[val] ,'red-text': !row.data[val]}">
+              {{row.data[val] ? 'check' : 'clear'}}
+            </i>
+          }
+
+          <!-- action -->
+          @case (tableColumnType.ACTION) {
+            <i (click)="col.command ? col.command(row.data , rowIndex) : null"
+               [ngClass]="getActionColStyleClasses(row.data,col)"
+               class="material-icons cl-hover">
+              {{col?.icon}}
+            </i>
+          }
+        }
+      }
+    </td>
+  }
+
+
+  <!-- actions column -->
+  @if(actions?.length) {
+    <td [attr.colspan]="1">
+      <cl-split-button [actions]="getActionCols(row)"
+                       [size]="'sm'"
+                       [label]="actionsBtnLabel"
+                       [icon]="actionsBtnIcon"
+                       (onClick)="splitActionClick($event , row.data)"/>
+    </td>
+  }
+
+</ng-template>
+

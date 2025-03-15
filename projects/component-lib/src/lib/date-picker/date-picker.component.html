@@ -1,0 +1,101 @@
+<div class="cl-date-picker" appClickOutside (clickOutside)="isOpen=false" #wrapperRef>
+
+  @if (clear) {
+    <cl-input-group [placeholder]="placeholder"
+                    [disabled]="disabled"
+                    [formControl]="formattedDate"
+                    [addons]="[clearButton]"
+                    (click)="handleShow($event)"
+                    (keydown)="onKeyPress($event)"
+                    styleClasses="cl-date-picker-clear"/>
+  } @else {
+    <cl-input-text [placeholder]="placeholder"
+                   (click)="handleShow($event)"
+                   [formControl]="formattedDate"
+                   [disabled]="disabled"
+                   (keydown)="onKeyPress($event)"/>
+  }
+
+  <div #modalRef class="cl-date-picker__modal" [ngStyle]="{'visibility': isOpen ? 'visible' : 'hidden'}" [ngClass]="{'cl-date-picker__modal--top':position === 'top', 'cl-date-picker__modal--bottom':position === 'bottom'}">
+    <div class="cl-date-picker__nav">
+      <div class="cl-date-picker__arrow-wrapper" (click)="handleNext(-1)">
+        <svg
+          class="cl-date-picker__arrow"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 14 10"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M1 5h12m0 0L9 1m4 4L9 9"
+          ></path>
+        </svg>
+      </div>
+      <div class="cl-date-picker__title" (click)="handleClickOnTitle()">
+        {{renderTitleText()}}
+      </div>
+      <div class="cl-date-picker__arrow-wrapper" (click)="handleNext(1)">
+        <svg
+          class="cl-date-picker__arrow"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 14 10"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13 5H1m0 0 4 4M1 5l4-4"
+          ></path>
+        </svg>
+      </div>
+    </div>
+
+    <div class="cl-date-picker__weekdays" [ngClass]="{ 'cl-date-picker__hidden': state !== 'days' }">
+      @for (weekday of weekdays; track weekday) {
+        <div class="cl-date-picker__weekday">{{ weekday }}</div>
+      }
+    </div>
+
+    <div class="cl-date-picker__days" [ngClass]="{ 'cl-date-picker__hidden': state !== 'days' }">
+      @for (week of days.weeks; track week) {
+        @for (day of week; track day) {
+          <div
+            [ngClass]="{
+              'cl-date-picker__day--disabled': day.disabled,
+              'cl-date-picker__day--today': isToday(day.date),
+              'cl-date-picker__day--selected': day.date.toISOString().split('T')[0] === date.toISOString().split('T')[0]
+            }"
+            class="cl-date-picker__day"
+            (click)="!day.disabled && handleClickOnDay(day)"
+          >
+            {{ formatDate(day.date, "DD") }}
+          </div>
+        }
+      }
+    </div>
+
+    <div class="cl-date-picker__months" [ngClass]="{ 'cl-date-picker__hidden': state !== 'months' }">
+      @for (month of months; track month) {
+        <div class="cl-date-picker__month" (click)="handleClickOnMonth(month.key)">
+          {{ month.name }}
+        </div>
+      }
+    </div>
+
+    <div class="cl-date-picker__years" [ngClass]="{ 'cl-date-picker__hidden': state !== 'decade' }">
+      @for (year of years; track year) {
+        <div class="cl-date-picker__year" (click)="handleClickOnYear(year)">
+          {{ year.title }}
+        </div>
+      }
+    </div>
+  </div>
+
+</div>

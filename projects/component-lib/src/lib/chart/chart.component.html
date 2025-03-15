@@ -1,0 +1,420 @@
+<div [ngSwitch]="type" class="cl-chart"  [ngClass]="'cl-'+type">
+  <!-- vertical bar -->
+  <ng-container *ngSwitchCase="'vertical-bar'">
+    <ngx-charts-bar-vertical #chartRef
+                             [view]="view!"
+                             [results]="data!"
+                             [gradient]="gradient"
+                             [legend]="legend"
+                             [legendTitle]="legendTitle"
+                             [legendPosition]="chartLegendPosition!"
+                             [xAxis]="xAxis"
+                             [yAxis]="yAxis"
+                             [showXAxisLabel]="showXAxisLabel"
+                             [showYAxisLabel]="showYAxisLabel"
+                             [xAxisLabel]="xAxisLabel"
+                             [yAxisLabel]="yAxisLabel"
+                             [roundEdges]="roundEdges"
+                             [yScaleMin]="yScaleMin!"
+                             [yScaleMax]="yScaleMax!"
+                             [tooltipDisabled]="tooltipDisabled"
+                             [showGridLines]="showGridLines"
+                             [roundDomains]="roundDomains"
+                             [trimXAxisTicks]="trimXAxisTicks"
+                             [trimYAxisTicks]="trimYAxisTicks"
+                             [rotateXAxisTicks]="rotateXAxisTicks"
+                             [maxXAxisTickLength]="maxXAxisTickLength"
+                             [maxYAxisTickLength]="maxYAxisTickLength"
+                             [xAxisTickFormatting]="xAxisTickFormatting!"
+                             [yAxisTickFormatting]="yAxisTickFormatting!"
+                             [dataLabelFormatting]="dataLabelFormatting!"
+                             [xAxisTicks]="xAxisTicks!"
+                             [yAxisTicks]="yAxisTicks!"
+                             [showDataLabel]="showDataLabel"
+                             [noBarWhenZero]="noBarWhenZero"
+                             [activeEntries]="activeEntries"
+                             [barPadding]="barPadding"
+                             [animations]="animations">
+    </ngx-charts-bar-vertical>
+  </ng-container>
+
+  <!-- vertical-bar-stacked -->
+  <ng-container *ngSwitchCase="'vertical-bar-stacked'">
+    <ngx-charts-bar-vertical-stacked #chartRef
+                                     [view]="view!"
+                                     [results]="data!"
+                                     [gradient]="gradient"
+                                     [legend]="legend"
+                                     [legendTitle]="legendTitle"
+                                     [legendPosition]="chartLegendPosition!"
+                                     [xAxis]="xAxis"
+                                     [yAxis]="yAxis"
+                                     [showXAxisLabel]="showXAxisLabel"
+                                     [showYAxisLabel]="showYAxisLabel"
+                                     [xAxisLabel]="xAxisLabel"
+                                     [yAxisLabel]="yAxisLabel"
+                                     [tooltipDisabled]="tooltipDisabled"
+                                     [showGridLines]="showGridLines"
+                                     [roundDomains]="roundDomains"
+                                     [trimXAxisTicks]="trimXAxisTicks"
+                                     [trimYAxisTicks]="trimYAxisTicks"
+                                     [rotateXAxisTicks]="rotateXAxisTicks"
+                                     [maxXAxisTickLength]="maxXAxisTickLength"
+                                     [maxYAxisTickLength]="maxYAxisTickLength"
+                                     [xAxisTickFormatting]="xAxisTickFormatting!"
+                                     [yAxisTickFormatting]="yAxisTickFormatting!"
+                                     [dataLabelFormatting]="dataLabelFormatting!"
+                                     [xAxisTicks]="xAxisTicks!"
+                                     [yAxisTicks]="yAxisTicks!"
+                                     [noBarWhenZero]="noBarWhenZero"
+                                     [activeEntries]="activeEntries"
+                                     [barPadding]="barPadding"
+                                     [animations]="animations">
+    </ngx-charts-bar-vertical-stacked>
+  </ng-container>
+
+  <!-- horizontal-bar-stacked -->
+  <ng-container *ngSwitchCase="'horizontal-bar-stacked'">
+    <ngx-charts-bar-horizontal-stacked #chartRef
+                                       [view]="view!"
+                                       [results]="data!"
+                                       [gradient]="gradient"
+                                       [legend]="legend"
+                                       [legendTitle]="legendTitle"
+                                       [legendPosition]="chartLegendPosition!"
+                                       [xAxis]="xAxis"
+                                       [yAxis]="yAxis"
+                                       [showXAxisLabel]="showXAxisLabel"
+                                       [showYAxisLabel]="showYAxisLabel"
+                                       [xAxisLabel]="xAxisLabel"
+                                       [yAxisLabel]="yAxisLabel"
+                                       [tooltipDisabled]="tooltipDisabled"
+                                       [showGridLines]="showGridLines"
+                                       [roundDomains]="roundDomains"
+                                       [trimXAxisTicks]="trimXAxisTicks"
+                                       [trimYAxisTicks]="trimYAxisTicks"
+                                       [rotateXAxisTicks]="rotateXAxisTicks"
+                                       [maxXAxisTickLength]="maxXAxisTickLength"
+                                       [maxYAxisTickLength]="maxYAxisTickLength"
+                                       [xAxisTickFormatting]="xAxisTickFormatting!"
+                                       [yAxisTickFormatting]="yAxisTickFormatting!"
+                                       [dataLabelFormatting]="dataLabelFormatting!"
+                                       [xAxisTicks]="xAxisTicks!"
+                                       [yAxisTicks]="yAxisTicks!"
+                                       [noBarWhenZero]="noBarWhenZero"
+                                       [activeEntries]="activeEntries"
+                                       [barPadding]="barPadding"
+                                       [animations]="animations">
+    </ngx-charts-bar-horizontal-stacked>
+  </ng-container>
+
+  <!-- group vertical bar -->
+  <ng-container *ngSwitchCase="'group-vertical-bar'">
+    <ngx-charts-bar-vertical-2d #chartRef
+                                [view]="view!"
+                                [results]="data!"
+                                [gradient]="gradient"
+                                [legend]="legend"
+                                [legendTitle]="legendTitle"
+                                [legendPosition]="chartLegendPosition!"
+                                [xAxis]="xAxis"
+                                [yAxis]="yAxis"
+                                [showXAxisLabel]="showXAxisLabel"
+                                [showYAxisLabel]="showYAxisLabel"
+                                [xAxisLabel]="xAxisLabel"
+                                [yAxisLabel]="yAxisLabel"
+                                [roundEdges]="roundEdges"
+                                [yScaleMax]="yScaleMax!"
+                                [tooltipDisabled]="tooltipDisabled"
+                                [showGridLines]="showGridLines"
+                                [roundDomains]="roundDomains"
+                                [trimXAxisTicks]="trimXAxisTicks"
+                                [trimYAxisTicks]="trimYAxisTicks"
+                                [rotateXAxisTicks]="rotateXAxisTicks"
+                                [maxXAxisTickLength]="maxXAxisTickLength"
+                                [maxYAxisTickLength]="maxYAxisTickLength"
+                                [xAxisTickFormatting]="xAxisTickFormatting!"
+                                [yAxisTickFormatting]="yAxisTickFormatting!"
+                                [dataLabelFormatting]="dataLabelFormatting!"
+                                [xAxisTicks]="xAxisTicks!"
+                                [yAxisTicks]="yAxisTicks!"
+                                [showDataLabel]="showDataLabel"
+                                [noBarWhenZero]="noBarWhenZero"
+                                [activeEntries]="activeEntries"
+                                [barPadding]="barPadding"
+                                [animations]="animations">
+    </ngx-charts-bar-vertical-2d>
+  </ng-container>
+
+  <!-- horizontal bar -->
+  <ng-container *ngSwitchCase="'horizontal-bar'">
+    <ngx-charts-bar-horizontal #chartRef
+                               [view]="view!"
+                               [results]="data!"
+                               [gradient]="gradient"
+                               [legend]="legend"
+                               [legendTitle]="legendTitle"
+                               [legendPosition]="chartLegendPosition!"
+                               [xAxis]="xAxis"
+                               [yAxis]="yAxis"
+                               [showXAxisLabel]="showXAxisLabel"
+                               [showYAxisLabel]="showYAxisLabel"
+                               [xAxisLabel]="xAxisLabel"
+                               [yAxisLabel]="yAxisLabel"
+                               [roundEdges]="roundEdges"
+                               [xScaleMin]="yScaleMin!"
+                               [xScaleMax]="yScaleMax!"
+                               [tooltipDisabled]="tooltipDisabled"
+                               [showGridLines]="showGridLines"
+                               [roundDomains]="roundDomains"
+                               [trimXAxisTicks]="trimXAxisTicks"
+                               [trimYAxisTicks]="trimYAxisTicks"
+                               [rotateXAxisTicks]="rotateXAxisTicks"
+                               [maxXAxisTickLength]="maxXAxisTickLength"
+                               [maxYAxisTickLength]="maxYAxisTickLength"
+                               [xAxisTickFormatting]="xAxisTickFormatting!"
+                               [yAxisTickFormatting]="yAxisTickFormatting!"
+                               [dataLabelFormatting]="dataLabelFormatting!"
+                               [xAxisTicks]="xAxisTicks!"
+                               [yAxisTicks]="yAxisTicks!"
+                               [showDataLabel]="showDataLabel"
+                               [noBarWhenZero]="noBarWhenZero"
+                               [activeEntries]="activeEntries"
+                               [barPadding]="barPadding"
+                               [animations]="animations">
+    </ngx-charts-bar-horizontal>
+  </ng-container>
+
+  <!-- group horizontal bar -->
+  <ng-container *ngSwitchCase="'group-horizontal-bar'">
+    <ngx-charts-bar-horizontal-2d #chartRef
+                                  [view]="view!"
+                                  [results]="data!"
+                                  [gradient]="gradient"
+                                  [legend]="legend"
+                                  [legendTitle]="legendTitle"
+                                  [legendPosition]="chartLegendPosition!"
+                                  [xAxis]="xAxis"
+                                  [yAxis]="yAxis"
+                                  [showXAxisLabel]="showXAxisLabel"
+                                  [showYAxisLabel]="showYAxisLabel"
+                                  [xAxisLabel]="xAxisLabel"
+                                  [yAxisLabel]="yAxisLabel"
+                                  [roundEdges]="roundEdges"
+                                  [xScaleMax]="xScaleMax!"
+                                  [tooltipDisabled]="tooltipDisabled"
+                                  [showGridLines]="showGridLines"
+                                  [roundDomains]="roundDomains"
+                                  [trimXAxisTicks]="trimXAxisTicks"
+                                  [trimYAxisTicks]="trimYAxisTicks"
+                                  [rotateXAxisTicks]="rotateXAxisTicks"
+                                  [maxXAxisTickLength]="maxXAxisTickLength"
+                                  [maxYAxisTickLength]="maxYAxisTickLength"
+                                  [xAxisTickFormatting]="xAxisTickFormatting!"
+                                  [yAxisTickFormatting]="yAxisTickFormatting!"
+                                  [dataLabelFormatting]="dataLabelFormatting!"
+                                  [xAxisTicks]="xAxisTicks!"
+                                  [yAxisTicks]="yAxisTicks!"
+                                  [showDataLabel]="showDataLabel"
+                                  [noBarWhenZero]="noBarWhenZero"
+                                  [activeEntries]="activeEntries"
+                                  [barPadding]="barPadding"
+                                  [animations]="animations">
+    </ngx-charts-bar-horizontal-2d>
+  </ng-container>
+
+  <!-- pie -->
+  <ng-container *ngSwitchCase="'pie'">
+    <ngx-charts-pie-chart #chartRef
+                          [view]="view!"
+                          [results]="data!"
+                          [animations]="animations"
+                          [legend]="legend"
+                          [legendTitle]="legendTitle"
+                          [legendPosition]="chartLegendPosition!"
+                          [gradient]="gradient"
+                          [activeEntries]="activeEntries"
+                          [tooltipText]="tooltipText"
+                          [doughnut]="doughnut"
+                          [labels]="labels"
+                          [trimLabels]="trimLabels"
+                          [maxLabelLength]="maxLabelLength"
+                          [tooltipDisabled]="tooltipDisabled"></ngx-charts-pie-chart>
+  </ng-container>
+
+
+  <!-- pie-grid -->
+  <ng-container *ngSwitchCase="'pie-grid'">
+    <ngx-charts-pie-grid #chartRef
+                         [view]="view!"
+                         [results]="data!"
+                         [animations]="animations"
+                         [activeEntries]="activeEntries"
+                         [label]="label"
+                         [tooltipDisabled]="tooltipDisabled"></ngx-charts-pie-grid>
+  </ng-container>
+
+  <!-- doughnut -->
+  <ng-container *ngSwitchCase="'doughnut'">
+    <ngx-charts-advanced-pie-chart #chartRef
+                                   [view]="view!"
+                                   [results]="data!"
+                                   [label]="label"
+                                   [animations]="animations"
+                                   [gradient]="gradient"
+                                   [activeEntries]="activeEntries"
+                                   [tooltipText]="tooltipText"
+                                   [tooltipDisabled]="tooltipDisabled"></ngx-charts-advanced-pie-chart>
+  </ng-container>
+
+  <!-- line -->
+  <ng-container *ngSwitchCase="'line'">
+    <ngx-charts-line-chart #chartRef
+                           [view]="view!"
+                           [results]="data!"
+                           [legend]="legend"
+                           [legendTitle]="legendTitle"
+                           [legendPosition]="chartLegendPosition!"
+                           [showXAxisLabel]="showXAxisLabel"
+                           [showYAxisLabel]="showYAxisLabel"
+                           [xAxis]="xAxis"
+                           [yAxis]="yAxis"
+                           [xAxisLabel]="xAxisLabel"
+                           [xScaleMax]="xScaleMax!"
+                           [xScaleMin]="xScaleMin!"
+                           [yScaleMin]="yScaleMin!"
+                           [yScaleMax]="yScaleMax!"
+                           [yAxisLabel]="yAxisLabel"></ngx-charts-line-chart>
+  </ng-container>
+
+  <!-- area -->
+  <ng-container *ngSwitchCase="'area'">
+    <ngx-charts-area-chart #chartRef
+                           [view]="view!"
+                           [results]="data!"
+                           [gradient]="gradient"
+                           [legend]="legend"
+                           [legendTitle]="legendTitle"
+                           [legendPosition]="chartLegendPosition!"
+                           [xAxis]="xAxis"
+                           [yAxis]="yAxis"
+                           [showXAxisLabel]="showXAxisLabel"
+                           [showYAxisLabel]="showYAxisLabel"
+                           [xAxisLabel]="xAxisLabel"
+                           [yAxisLabel]="yAxisLabel"
+                           [yScaleMin]="yScaleMin!"
+                           [yScaleMax]="yScaleMax!"
+                           [xScaleMin]="xScaleMin!"
+                           [xScaleMax]="xScaleMax!"
+                           [tooltipDisabled]="tooltipDisabled"
+                           [showGridLines]="showGridLines"
+                           [roundDomains]="roundDomains"
+                           [trimXAxisTicks]="trimXAxisTicks"
+                           [trimYAxisTicks]="trimYAxisTicks"
+                           [rotateXAxisTicks]="rotateXAxisTicks"
+                           [maxXAxisTickLength]="maxXAxisTickLength"
+                           [maxYAxisTickLength]="maxYAxisTickLength"
+                           [xAxisTickFormatting]="xAxisTickFormatting!"
+                           [yAxisTickFormatting]="yAxisTickFormatting!"
+                           [xAxisTicks]="xAxisTicks!"
+                           [yAxisTicks]="yAxisTicks!"
+                           [activeEntries]="activeEntries"
+                           [animations]="animations">
+    </ngx-charts-area-chart>
+  </ng-container>
+
+  <!-- gauge -->
+  <ng-container *ngSwitchCase="'gauge'">
+    <ngx-charts-gauge #chartRef
+                      [view]="view!"
+                      [results]="data!"
+                      [legend]="legend"
+                      [legendTitle]="legendTitle"
+                      [legendPosition]="chartLegendPosition!"
+                      [min]="min"
+                      [max]="max"
+                      [bigSegments]="bigSegments"
+                      [smallSegments]="smallSegments"
+                      [angleSpan]="angleSpan"
+                      [startAngle]="startAngle"
+                      [animations]="animations"
+                      [showText]="showText">
+    </ngx-charts-gauge>
+  </ng-container>
+
+  <!-- bubble -->
+  <ng-container *ngSwitchCase="'bubble'">
+    <ngx-charts-bubble-chart #chartRef
+                             [view]="view!"
+                             [results]="data!"
+                             [xAxis]="xAxis"
+                             [yAxis]="yAxis"
+                             [legend]="legend"
+                             [legendTitle]="legendTitle!"
+                             [legendPosition]="chartLegendPosition!"
+                             [showXAxisLabel]="showXAxisLabel"
+                             [showYAxisLabel]="showYAxisLabel"
+                             [xAxisLabel]="xAxisLabel"
+                             [yAxisLabel]="yAxisLabel"
+                             [xScaleMin]="xScaleMin!"
+                             [xScaleMax]="xScaleMax!"
+                             [yScaleMin]="yScaleMin!"
+                             [yScaleMax]="yScaleMax!"
+                             [tooltipDisabled]="tooltipDisabled"
+                             [showGridLines]="showGridLines"
+                             [roundDomains]="roundDomains"
+                             [trimXAxisTicks]="trimXAxisTicks"
+                             [trimYAxisTicks]="trimYAxisTicks"
+                             [rotateXAxisTicks]="rotateXAxisTicks"
+                             [maxXAxisTickLength]="maxXAxisTickLength"
+                             [maxYAxisTickLength]="maxYAxisTickLength"
+                             [xAxisTickFormatting]="xAxisTickFormatting!"
+                             [yAxisTickFormatting]="yAxisTickFormatting!"
+                             [xAxisTicks]="xAxisTicks!"
+                             [yAxisTicks]="yAxisTicks!"
+                             [animations]="animations">
+    </ngx-charts-bubble-chart>
+  </ng-container>
+
+  <!-- number cards -->
+  <ng-container *ngSwitchCase="'number-cards'">
+    <ngx-charts-number-card #chartRef
+                            [view]="view!"
+                            [results]="data!"
+                            [animations]="animations"
+                            [bandColor]="bandColor"
+                            [valueFormatting]="dataLabelFormatting!"
+                            [textColor]="textColor"
+                            [cardColor]="cardColor">
+    </ngx-charts-number-card>
+  </ng-container>
+
+  <!-- polar -->
+  <ng-container *ngSwitchCase="'polar'">
+    <ngx-charts-polar-chart #chartRef
+                            [view]="view!"
+                            [results]="data!"
+                            [gradient]="gradient"
+                            [legend]="legend"
+                            [legendTitle]="legendTitle"
+                            [legendPosition]="chartLegendPosition!"
+                            [xAxis]="xAxis"
+                            [yAxis]="yAxis"
+                            [showXAxisLabel]="showXAxisLabel"
+                            [showYAxisLabel]="showYAxisLabel"
+                            [xAxisLabel]="xAxisLabel"
+                            [yAxisLabel]="yAxisLabel"
+                            [tooltipDisabled]="tooltipDisabled"
+                            [showGridLines]="showGridLines"
+                            [roundDomains]="roundDomains"
+                            [trimYAxisTicks]="trimYAxisTicks"
+                            [maxYAxisTickLength]="maxYAxisTickLength"
+                            [xAxisTickFormatting]="xAxisTickFormatting!"
+                            [yAxisTickFormatting]="yAxisTickFormatting!"
+                            [activeEntries]="activeEntries"
+                            [animations]="animations">
+    </ngx-charts-polar-chart>
+  </ng-container>
+
+
+</div>

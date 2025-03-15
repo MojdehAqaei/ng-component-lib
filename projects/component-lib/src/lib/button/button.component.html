@@ -1,0 +1,9 @@
+<button
+  type="button"
+  (click)="click($event)"
+  [ngClass]="classes"
+  [disabled]="disabled" >
+  <span  *ngIf="icon" class="material-icons cl-button-icon"  [ngClass]="iconClasses">{{loading ? 'sync' : icon}}</span>
+  <span class="cl-button-label" *ngIf="label">{{ label }}</span>
+  <ng-content></ng-content>
+</button>

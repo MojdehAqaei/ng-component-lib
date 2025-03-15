@@ -1,0 +1,15 @@
+<div class="cl-chips cl-component" [ngClass]="styleClasses">
+  <ul class="cl-inputtext cl-chips-multiple-container" [ngClass]="{'cl-disabled':disabled ,'cl-focus':focused}">
+    <li class="cl-chips-token" *ngFor="let item of items;let i=index">
+      <span class="cl-chips-token-label">{{item.label}}</span>
+      <span class="cl-chips-token-icon pi pi-times-circle" (click)="removeItem(i)"></span>
+    </li>
+
+    <li class="cl-chips-input-token">
+      <input class="cl-chips-input-token-input" type="text" [(ngModel)]="inputValue" [placeholder]="placeholder"/>
+    </li>
+  </ul>
+  <div class="cl-chips-counter" *ngIf="showLength && maxLength && items?.length">{{items?.length}}/{{maxLength}}</div>
+  <div class="cl-form-message-text-error">{{errorMessage}}</div>
+</div>
+

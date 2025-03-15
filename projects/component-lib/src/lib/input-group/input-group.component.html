@@ -1,0 +1,52 @@
+<div class="cl-inputgroup"
+     [ngClass]="styleClasses">
+  @for (addon of addonsStart; track addon) {
+    <ng-container [ngTemplateOutlet]="addonsTemplate"
+                  [ngTemplateOutletContext]="{addon:addon}"/>
+  }
+
+  <input class="cl-inputtext"
+         type="text"
+         [maxlength]="maxLength || null"
+         [(ngModel)]="inputValue"
+         [placeholder]="placeholder"
+         (input)="change()" [disabled]="!!disabled"
+         [ngClass]="{'cl-disabled':disabled}"/>
+
+  @for (addon of addonsEnd; track addon) {
+    <ng-container [ngTemplateOutlet]="addonsTemplate" [ngTemplateOutletContext]="{addon:addon}"/>
+  }
+</div>
+
+
+<ng-template #addonsTemplate let-addon="addon">
+  @switch (addon.type) {
+    @case ('button') {
+      <cl-button [icon]="addon.icon"
+                 [label]="addon.label"
+                 [styleClasses]="addon.styleClasses"
+                 (onClick)="addon.command ? addon.command () : null"
+                 [disabled]="!!disabled"/>
+    }
+
+    @case ('icon') {
+      <span class="cl-inputgroup-addon"
+            [class]="addon.styleClasses"
+            [ngClass]="{'cl-disabled':disabled}"
+            (click)="addon.command ? addon.command () : null">
+          <i  class="material-icons"  *ngIf="addon.icon">{{addon.icon}}</i>
+        <span>{{addon.label}}</span>
+      </span>
+    }
+
+    @default {
+      <span class="cl-inputgroup-addon"
+            [class]="addon.styleClasses"
+            [ngClass]="{'cl-disabled':disabled}"
+            (click)="addon.command ? addon.command () : null">
+          <i  class="material-icons"  *ngIf="addon.icon">{{addon.icon}}</i>
+        <span>{{addon.label}}</span>
+      </span>
+    }
+  }
+</ng-template>

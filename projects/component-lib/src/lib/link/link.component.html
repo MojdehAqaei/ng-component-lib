@@ -1,0 +1,28 @@
+<div [ngClass]="classes">
+  @if (href) {
+    <a [href]="href" [target]="target" (click)="onClick.emit()">
+      @if (icon) {
+        <i class="cl-link-icon material-icons tiny">{{ icon }}</i>
+      }
+      @if (title) {
+        <span>{{ title }}</span>
+      }
+      @if (imageSrc) {
+        <cl-image [src]="imageSrc" [imgLink]="href"/>
+      }
+    </a>
+  } @else if (routerLink) {
+    <a [routerLink]="routerLink" (click)="onClick.emit()">
+      @if (icon) {
+        <i class="cl-link-icon material-icons tiny">{{ icon }}</i>
+      }
+      @if (title) {
+        <span>{{ title }}</span>
+      }
+      @if (imageSrc) {
+        <cl-image [src]="imageSrc" [imgLink]="routerLink"/>
+      }
+    </a>
+  }
+</div>
+

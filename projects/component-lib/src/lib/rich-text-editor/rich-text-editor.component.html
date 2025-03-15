@@ -1,0 +1,64 @@
+<div class="cl-editor-container" [ngClass]="{'cl-disabled':disabled , styleClasses}">
+  <div class="cl-editor-toolbar" *ngIf="headerTemplate">
+<!--    <ng-content select="cl-header"></ng-content>-->
+    <ng-container *ngTemplateOutlet="headerTemplate"></ng-container>
+  </div>
+
+  <div class="cl-editor-toolbar" *ngIf="!headerTemplate">
+    <span class="cl-formats">
+      <cl-select [options]="headingList" [showClearIcon]="false" [(ngModel)]="heading" (onSelect)="headingSelected($event)" class="cl-toolbar-select" [class.cl-on]="toolbarStatus.heading"></cl-select>
+      <cl-select [options]="fontTypeList" [showClearIcon]="false" [(ngModel)]="fontType" (onSelect)="fontTypeSelected($event)" class="cl-toolbar-select" [class.cl-on]="toolbarStatus.fontType"></cl-select>
+    </span>
+    <span>|</span>
+<!--    <cl-divider layout="vertical"></cl-divider>-->
+    <span class="cl-formats">
+      <cl-button icon="format_bold" (onClick)="btnClicked('strong')" [class.cl-on]="toolbarStatus.bold" ></cl-button>
+      <cl-button icon="format_italic" (onClick)="btnClicked('em')" [class.cl-on]="toolbarStatus.italic"></cl-button>
+      <cl-button icon="format_underlined" (onClick)="btnClicked('u')" [class.cl-on]="toolbarStatus.underline"></cl-button>
+    </span>
+    <span>|</span>
+    <span class="cl-formats">
+      <cl-color-picker icon="format_color_text" (onSelect)="colorSelected($event)" [class.cl-on]="toolbarStatus.fontColor"></cl-color-picker>
+      <cl-color-picker icon="font_download" (onSelect)="backColorSelected($event)" [class.cl-on]="toolbarStatus.fontBackgroundColor"></cl-color-picker>
+    </span>
+    <span>|</span>
+    <span class="cl-formats">
+      <cl-button icon="format_list_bulleted" (onClick)="ulClicked()" [class.cl-on]="toolbarStatus.unOrderList"></cl-button>
+      <cl-button icon="format_list_numbered" (onClick)="olClicked()" [class.cl-on]="toolbarStatus.orderList"></cl-button>
+    </span>
+    <span>|</span>
+    <span class="cl-formats">
+     <cl-button icon="format_align_left" (onClick)="alignClicked('left')" [class.cl-on]="toolbarStatus.alignLeft"></cl-button>
+     <cl-button icon="format_align_center" (onClick)="alignClicked('center')" [class.cl-on]="toolbarStatus.alignCenter"></cl-button>
+     <cl-button icon="format_align_right" (onClick)="alignClicked('right')" [class.cl-on]="toolbarStatus.alignRight"></cl-button>
+     <cl-button icon="format_align_justify" (onClick)="alignClicked('justify')" [class.cl-on]="toolbarStatus.alignJustify"></cl-button>
+    </span>
+    <span>|</span>
+    <span class="cl-formats">
+      <cl-button icon="insert_link" (onClick)="showDialog = true" [class.cl-on]="toolbarStatus.link"></cl-button>
+      <cl-button icon="crop_original" (onClick)="imgUpload.click()" [class.cl-on]="toolbarStatus.image"></cl-button>
+    </span>
+  </div>
+
+  <div class="cl-editor-content" style="height: 320px;" (mouseup)="getSelectedText()" #cl_editor_content>
+    <cdk-virtual-scroll-viewport itemSize="10" [style.height.px]="containerHeight">
+      <div class="cl-editor" data-gramm="false" contenteditable="true" #cl_editor>
+        <p>
+          <br>
+        </p>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </div>
+</div>
+
+<cl-dialog [(visible)]="showDialog" [width]="'50vw'">
+  <div class="row">
+    <label class="col s12 l2">:آدرس لینک</label>
+    <cl-input-text class="col s12 l8" [(ngModel)]="linkText"></cl-input-text>
+    <cl-button class="col s12 l2" (onClick)="addLink()">افزودن</cl-button>
+  </div>
+</cl-dialog>
+
+<input type="file" #imgUpload (change)="addImage($event)" style="display: none">
+
+

@@ -1,0 +1,16 @@
+<div class="cl-avatar" [ngClass]="classes">
+
+  @switch (type) {
+    @case ("label") {
+      <span>{{value}}</span>
+    }
+    @case ("icon") {
+      <span class="material-icons cl-avatar-icon">{{value}}</span>
+    }
+    @case ("img") {
+      <cl-image [src]="value" styleClasses="cl-avatar-image"/>
+    }
+  }
+
+  <ng-content></ng-content>
+</div>

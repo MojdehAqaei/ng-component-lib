@@ -1,0 +1,7 @@
+<input type="text" [ngClass]="classes"
+                   class="cl-inputtext "
+                   (keyup.enter)="onEnter.emit(inputValue == '0' ? 0 : + inputValue || null)"
+                   [placeholder]="placeholder"
+                   [ngModel]="inputText ?(prefix||'') +inputText+(suffix ||'') :''"
+                   [disabled]="!!disabled"
+                   [readonly]="readonly"/>

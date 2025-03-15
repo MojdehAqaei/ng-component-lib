@@ -1,0 +1,54 @@
+<div class="cl-picklist">
+    <div class="cl-picklist-list-wrapper">
+        <div class="cl-picklist-header">
+            <div class="cl-picklist-title">{{ sourceHeader }}</div>
+        </div>
+        <div *ngIf="filter" class="cl-picklist-filter-container">
+            <div class="cl-picklist-filter">
+                <cl-input-text type="text" autocomplete="off" icon="search" [placeholder]="sourcePlaceHolder" 
+                styleClasses="cl-inputtext-picklist" (onInputChange)="filterSourceList($event)"></cl-input-text>
+            </div>
+        </div>
+        <ul class="cl-picklist-list" clDragDrop [droppable]="true" (onDrop)="onSourceDrop()">
+            <cdk-virtual-scroll-viewport itemSize="10" [style.height.px]="containerHeight" >
+                <li class="cl-picklist-item" *ngFor="let item of filteredSource;let i=index" (click)="onSourceSelected(item)" [ngClass]="{'cl-highlight':item == selectedSource}"
+                    id="{{'sourecItem' + i}}" clDragDrop [draggable]="true" (onDragStart)="onSourceDrag(item)" (onDragEnd)="onSourceDragEnd()">
+                        <ng-container
+                            *ngIf="templateRef"
+                            [ngTemplateOutlet]="templateRef"
+                            [ngTemplateOutletContext]="{$implicit:item}">
+                        </ng-container>
+                </li>
+            </cdk-virtual-scroll-viewport>
+        </ul>
+    </div>
+    <div class="cl-picklist-buttons">
+        <cl-button icon="chevron_right" [disabled]="disableOneToTarget" (onClick)="moveOneToTarget()" ></cl-button>
+        <cl-button icon="keyboard_double_arrow_right" [disabled]="disableAllToTarget" (onClick)="moveAllToTarget()"></cl-button>
+        <cl-button icon="chevron_left" [disabled]="disableOneToSource" (onClick)="moveOneToSource()" ></cl-button>
+        <cl-button icon="keyboard_double_arrow_left" [disabled]="disableAllToSource" (onClick)="moveAllToSource()"></cl-button>
+    </div>
+    <div class="cl-picklist-list-wrapper">
+        <div class="cl-picklist-header">
+            <div class="cl-picklist-title">{{ targetHeader }}</div>
+        </div>
+        <div *ngIf="filter" class="cl-picklist-filter-container">
+            <div class="cl-picklist-filter">
+                <cl-input-text type="text" autocomplete="off" icon="search" [placeholder]="targetPlaceHolder"
+                 styleClasses="cl-inputtext-picklist" (onInputChange)="filterTargetList($event)"></cl-input-text>
+            </div>
+        </div>
+        <ul class="cl-picklist-list" clDragDrop [droppable]="true" (onDrop)="onTargetDrop()">
+            <cdk-virtual-scroll-viewport  itemSize="10" [style.height.px]="containerHeight" >
+                <li class="cl-picklist-item" *ngFor="let item of filteredTarget;let i=index"  (click)="onTargetSelected(item)" [ngClass]="{'cl-highlight':item == selectedTarget}"  
+                    id="{{'targetItem' + i}}" clDragDrop [draggable]="true" (onDragStart)="onTargetDrag(item)" (onDragEnd)="onTargetDragEnd()"  >
+                        <ng-container
+                            *ngIf="templateRef"
+                            [ngTemplateOutlet]="templateRef"
+                            [ngTemplateOutletContext]="{$implicit:item}">
+                        </ng-container>
+                    </li>
+            </cdk-virtual-scroll-viewport>
+        </ul>
+    </div>
+</div>

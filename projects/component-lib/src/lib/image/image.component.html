@@ -1,0 +1,23 @@
+<div class="cl-image" [ngClass]="classes">
+    <img [ngSrc]="src" [routerLink]="imgLink" fill class="cl-image-img" #image [ngClass]="{'cl-image-img-round':roundEdges}" alt="" priority>
+
+    <div *ngIf="hasPreview" class="cl-image-preview-indicator" [ngClass]="{'cl-image-img-round':roundEdges}" (click)="onShowPreview(image)">
+        <i class="material-icons">visibility</i>
+    </div>
+    <div *ngIf="showPreview" class="cl-image-preview">
+        <div class="cl-image-preview-toolbar">
+            <button type="button" class="cl-image-preview-action" [ngClass]="{'cl-disabled':zoomOutDisabled}" (click)="onZoomOut()">
+                <i class="material-icons">zoom_out</i>
+            </button>
+            <button type="button" class="cl-image-preview-action" [ngClass]="{'cl-disabled':zoomInDisabled}" (click)=" onZoomIn()">
+                <i class="material-icons">zoom_in</i>
+            </button>
+            <button type="button" class="cl-image-preview-action" (click)="showPreview = false">
+                <i class="material-icons">close</i>
+            </button>
+        </div>
+        <div>
+            <img #preImg [ngSrc]="src" fill class="cl-image-img-preview" alt="">
+        </div>
+    </div>
+</div>

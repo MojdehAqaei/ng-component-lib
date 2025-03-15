@@ -1,0 +1,8 @@
+<span [ngClass]="styleClasses">
+  <div class="cl-checkbox cl-component"  [ngClass]="{'cl-checkbox-checked':checked  , 'cl-checkbox-disabled':disabled}" (click)="onClick()">
+  <div class="cl-checkbox-box" [ngClass]="{'cl-highlight':checked, 'cl-disabled ':disabled}"><span class="cl-checkbox-icon pi pi-check"></span></div>
+</div>
+<span class="cl-checkbox-label" *ngIf="label">{{label}}</span>
+</span>
+
+

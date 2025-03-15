@@ -1,0 +1,164 @@
+<div class="cl-table">
+  <h4 *ngIf="title">{{title}}:</h4>
+  <p-table #tableRef
+           [value]="value"
+           [columns]="cols"
+           [dataKey]="columnKey"
+           [(selection)]="selectedRows"
+           [resizableColumns]="resizableColumns"
+           [columnResizeMode]="columnResizeMode"
+           [reorderableColumns]="reorderAbleColumns"
+           [sortMode]="sortMode"
+           [rows]="rows"
+           [totalRecords]="totalRecords"
+           [rowsPerPageOptions]="rowsPerPageOptions"
+           [alwaysShowPaginator]="false"
+           [showCurrentPageReport]="true"
+           [currentPageReportTemplate]="currentPageReportTemplate"
+           [paginator]="hasPaginator"
+           [rowGroupMode]="rowGroupMode"
+           [groupRowsBy]="groupRowsBy"
+           [lazy]="isLazy"
+           [loading]="loading"
+           [scrollable]="verticalScrollable || horizontalScrollable"
+           [scrollHeight]="scrollHeight"
+           (onPage)="load($event)"
+           (onLazyLoad)="onLazyLoad.emit($event)"
+           (onRowSelect)="select()"
+           (onRowUnselect)="select()"
+           [tableStyleClass]="tableStyleClasses">
+
+
+    <!-- table caption-->
+      <ng-template pTemplate="caption" *ngIf="captionTemplateRef">
+        <ng-container [ngTemplateOutlet]="captionTemplateRef"></ng-container>
+      </ng-template>
+
+
+    <!-- table header-->
+    <ng-template pTemplate="header">
+      <ng-container *ngIf="headerTemplateRef" [ngTemplateOutlet]="headerTemplateRef"></ng-container>
+      <ng-container *ngIf="!headerTemplateRef">
+        <tr>
+          <th *ngIf="reorderAbleColumns" style="width: 50px" [attr.colspan]="1"></th>
+          <th [attr.colspan]="1" style="width: 50px" *ngIf="rowExpand"></th>
+          <th *ngIf="isSelectable" style="width: 50px" pResizableColumn [attr.colspan]="1"></th>
+          <th style="width: 80px" pResizableColumn [attr.colspan]="1">ردیف</th>
+
+          <ng-container *ngFor="let col of cols" [style]="col.style">
+            <th *ngIf="!isSortable ||  !col.sortBy " pResizableColumn [attr.colSpan]="col.colSpan || 1"
+                [width]="col.colSpan ? (col.colSpan * 100) +'px' :'unset'"> {{col.header}}</th>
+
+            <th *ngIf="isSortable && col.sortBy" pResizableColumn [attr.colSpan]="col.colSpan || 1"
+                [width]="col.colSpan ? (col.colSpan * 100) +'px' :'unset'"
+                [pSortableColumn]="col.sortBy">{{col.header}}
+              <p-sortIcon [field]="col.sortBy"></p-sortIcon>
+            </th>
+          </ng-container>
+          <th [attr.colspan]="1" *ngIf="actionsCol?.length " pResizableColumn>عملیات</th>
+        </tr>
+      </ng-container>
+    </ng-template>
+
+    <!-- row group-->
+    <ng-container *ngIf="rowGroupMode">
+      <ng-template pTemplate="groupheader" let-row let-index="rowIndex" let-expanded="expanded">
+        <ng-container *ngIf="groupHeaderTemplateRef" [ngTemplateOutlet]="groupHeaderTemplateRef"
+                      [ngTemplateOutletContext]="{row,rowIndex:index,expanded}"></ng-container>
+        <ng-container *ngIf="!groupHeaderTemplateRef">
+          <tr pRowGroupHeader>
+            <td [attr.colspan]="cols.length+1">
+              <i [pRowToggler]="row" [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+              rowGroup header
+            </td>
+          </tr>
+        </ng-container>
+      </ng-template>
+
+      <ng-template pTemplate="groupfooter" let-row>
+        <ng-container *ngIf="groupFooterTemplateRef" [ngTemplateOutlet]="groupFooterTemplateRef"
+                      [ngTemplateOutletContext]="{row}"></ng-container>
+        <ng-container *ngIf="!groupFooterTemplateRef">
+          <tr class="p-rowgroup-footer">
+            <td [attr.colspan]="cols.length+1"></td>
+          </tr>
+        </ng-container>
+      </ng-template>
+
+    </ng-container>
+
+
+    <!--body-->
+    <ng-template pTemplate="body" let-row let-index="rowIndex" let-expanded="expanded">
+      <ng-container *ngIf="bodyTemplateRef" [ngTemplateOutlet]="bodyTemplateRef"
+                    [ngTemplateOutletContext]="{row,rowIndex:index,expanded}"></ng-container>
+      <ng-container *ngIf="!bodyTemplateRef">
+        <tr [pReorderableRow]="+index">
+          <td *ngIf="reorderAbleColumns" [attr.colspan]="1" style="width: 50px">
+            <span class="pi pi-bars" [pReorderableRowHandle]="+index"></span>
+          </td>
+          <td *ngIf="rowExpand" [attr.colspan]="1" style="width: 50px">
+            <i [pRowToggler]="row" [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+          </td>
+          <td *ngIf="isSelectable" [attr.colspan]="1" style="width: 50px">
+            <p-tableCheckbox [value]="row"></p-tableCheckbox>
+          </td>
+          <td [attr.colspan]="1" style="width: 80px">{{ (pageStart || 0) + index + 1 }}</td>
+          <td *ngFor="let col of cols" [attr.colSpan]="col.colSpan || 1"
+              [width]="col.colSpan ? (col.colSpan * 100) +'px' :'unset'">
+            <ng-container *ngFor="let val of col.value; let valIndex = index;">
+              <ng-container
+                *ngIf="!col?.type || col?.type == tableColumnType.TEXT">{{getColumnText(col, row, val, valIndex)}}</ng-container>
+              <ng-container *ngIf="col?.type == tableColumnType.BOOLEAN"><i class="material-icons"
+                                                                            [ngClass]="{'green-text': row[val] ,'red-text': !row[val]}">{{row[val] ? 'check' : 'clear'}}</i>
+              </ng-container>
+              <ng-container *ngIf="col?.type == tableColumnType.ACTION"><i (click)="col?.command(row)"
+                                                                           [ngClass]="getActionColStyleClasses(row,col)"
+                                                                           class="material-icons cl-hover">{{col?.icon}}</i>
+              </ng-container>
+            </ng-container>
+          </td>
+          <td *ngIf="actionsCol?.length" [attr.colspan]="1">
+            <ng-container *ngFor="let ac of actionsCol">
+              <i class="material-icons cl-hover"
+                 (click)="ac?.command(row)"
+                 [ngClass]="getActionColStyleClasses(row,ac)">
+                {{ac?.icon}}
+              </i>
+            </ng-container>
+          </td>
+        </tr>
+      </ng-container>
+    </ng-template>
+
+    <!--row expansion-->
+    <ng-template pTemplate="rowexpansion"  *ngIf="rowExpand && !groupRowsBy" let-row>
+      <ng-container *ngIf="rowExpansionTemplateRef" [ngTemplateOutlet]="rowExpansionTemplateRef"
+                    [ngTemplateOutletContext]="{row}"></ng-container>
+      <ng-container *ngIf="!rowExpansionTemplateRef">
+        <tr>
+          <td [attr.colspan]="colsLength">content</td>
+        </tr>
+      </ng-container>
+    </ng-template>
+
+
+    <!--footer-->
+    <ng-template pTemplate="footer">
+      <ng-container *ngIf="footerTemplateRef" [ngTemplateOutlet]="footerTemplateRef"></ng-container>
+      <ng-container *ngIf="!footerTemplateRef &&  cols && cols.length">
+        <tr  *ngIf="!value?.length"><td   [attr.colspan]="colsLength">نتیجه ای یافت نشد</td></tr>
+      </ng-container>
+    </ng-template>
+
+
+    <!--summary-->
+    <ng-template pTemplate="summary" *ngIf="summaryTemplateRef">
+      <ng-container [ngTemplateOutlet]="summaryTemplateRef"></ng-container>
+    </ng-template>
+
+  </p-table>
+</div>
+
+
+

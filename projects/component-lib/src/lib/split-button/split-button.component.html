@@ -1,0 +1,39 @@
+<div class="cl-split-button cl-component"
+     [ngClass]="styleClasses">
+
+  <div class="cl-split-button-buttons">
+    @if (label) {
+      <cl-button [label]="label"
+                 [type]="type"
+                 [styleClasses]="buttonClasses"
+                 [size]="size"
+                 (onClick)="click()"
+                 [outlined]="outlined"/>
+    }
+
+    <cl-button [stopPropagation]="false"
+               [icon]="icon || 'keyboard_arrow_down'"
+               [type]="type"
+               [styleClasses]="toggleButtonClasses"
+               (onClick)="setPosition($event)"
+               [size]="size"
+               [disabled]="!actions.length"
+               [outlined]="outlined"/>
+  </div>
+
+  @if (actions.length) {
+    <ul class="cl-split-button-panel"
+        [style.display]="showPanel ? 'block' : 'none'">
+
+      @for (item of actions; track compareActions) {
+        <li (click)="click(item)" [ngClass]="getActionClasses(item)" [ngStyle]="{'cursor':item.loading ? 'default' :'pointer'}">
+          <span class="material-icons icons" [ngClass]="item.iconClass || ''">{{item.icon}}</span>
+          <span class="label">{{item.label}}</span>
+          @if (item.loading) {
+            <span class="pi pi-spin pi-spinner icons blue-text darken-2"></span>
+          }
+        </li>
+      }
+    </ul>
+  }
+</div>

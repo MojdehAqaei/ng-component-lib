@@ -1,0 +1,26 @@
+<div class="cl-drawer-wrapper cl-component"
+     [ngClass]="{'cl-drawer-wrapper-left': position == 'left',
+                 'cl-drawer-wrapper-right': position == 'right',
+                 'cl-drawer-wrapper-fixed': !appendTo || appendTo == 'body',
+                 'cl-drawer-wrapper-static': appendTo && appendTo != 'body',
+                 'open' : visible,
+                 'close' : !visible}">
+  <div class="cl-drawer-inner"
+       [style.width]="width"
+       [ngClass]="styleClasses">
+    <div class="cl-drawer-header">
+      <a href="#" (click)="$event.preventDefault();closeDrawer($event)"><i class="material-icons tiny black-text">close</i></a>
+      @if (headerTitle) {
+        <h3 style="flex-grow: 1">
+          <i class="material-icons" style="vertical-align: middle">{{ headerIcon }}</i>
+        {{ headerTitle }}
+        </h3>
+      }
+
+    </div>
+
+    <div class="cl-drawer-content">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>
